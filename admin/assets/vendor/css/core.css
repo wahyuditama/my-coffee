@@ -15649,12 +15649,12 @@ html:not(.layout-footer-fixed) .content-wrapper {
 }
 
 .app-brand-link {
-  /* display: flex; */
+  display: flex;
   align-items: center;
 }
 
 .app-brand-logo {
-  display: block;
+  display: inline;
   flex-grow: 0;
   flex-shrink: 0;
   overflow: hidden;
@@ -15662,7 +15662,7 @@ html:not(.layout-footer-fixed) .content-wrapper {
 }
 .app-brand-logo img,
 .app-brand-logo svg {
-  display: block;
+  display: inline;
 }
 
 .app-brand-text {

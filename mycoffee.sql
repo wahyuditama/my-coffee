@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 04, 2025 at 04:45 PM
+-- Generation Time: Jan 12, 2025 at 07:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `mycoffee`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `about`
+--
+
+CREATE TABLE `about` (
+  `id` int(12) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `title` text NOT NULL,
+  `suggestion` text NOT NULL,
+  `foto` varchar(255) NOT NULL,
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_At` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `about`
+--
+
+INSERT INTO `about` (`id`, `username`, `title`, `suggestion`, `foto`, `create_at`, `update_At`) VALUES
+(1, 'wahyuramdany', '', 'Minuman kopi pekat dengan rasa kuat yang dibuat dari ekstraksi biji kopi halus menggunakan tekanan tinggi.', 'img7.jpeg', '2025-01-12 17:28:34', '2025-01-12 17:28:51'),
+(3, 'Doni Iryawan', '', 'lorem1', 'img1.jpg', '2025-01-12 17:42:51', '2025-01-12 17:42:51');
 
 -- --------------------------------------------------------
 
@@ -158,6 +182,17 @@ CREATE TABLE `product` (
   `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`id`, `id_category`, `product_name`, `description`, `price`, `image`, `stock`, `created_at`, `update_at`) VALUES
+(1, 1, 'Coffee Espresso', 'lorem ipsum dolor site amet                                                                         ', 20000.00, 'img1.jpg', 12, '2025-01-11 08:09:52', '2025-01-11 09:39:34'),
+(2, 2, 'Americano', '                                                                                                    ', 11000.00, 'img2.jpg', 12, '2025-01-11 08:27:27', '2025-01-11 09:40:01'),
+(3, 3, 'coffee ice vanila', '                                                        ', 15000.00, 'img2.jpg', 15, '2025-01-11 08:28:28', '2025-01-11 08:28:28'),
+(4, 1, 'coffee hot caramell', '                                                        ', 16000.00, 'img3.jpg', 13, '2025-01-11 08:29:10', '2025-01-11 08:29:10'),
+(5, 2, 'Milk  Hot/ice chocolate ', '                                                        ', 16000.00, 'img5.jpg', 14, '2025-01-11 09:07:20', '2025-01-11 09:07:20');
+
 -- --------------------------------------------------------
 
 --
@@ -184,6 +219,12 @@ INSERT INTO `user` (`id`, `id_level`, `username`, `email`, `password`, `create_a
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `about`
+--
+ALTER TABLE `about`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `category`
@@ -244,6 +285,12 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `about`
+--
+ALTER TABLE `about`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
@@ -253,7 +300,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `detail_order`
@@ -283,7 +330,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user`

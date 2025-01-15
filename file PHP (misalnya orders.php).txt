@@ -1,0 +1,132 @@
+// file PHP (misalnya orders.php)
+<?php
+session_start();
+include 'koneksi.php';
+
+<?php
+include 'koneksi.php';
+
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
+    $result = mysqli_query($koneksi, "SELECT * FROM product WHERE id = $id");
+    $product = mysqli_fetch_assoc($result);
+    echo json_encode($product);
+}
+?>
+?>
+
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- Form untuk menambah pesanan -->
+    <form id="orderForm">
+        <select name="product_id" id="product_id">
+            <?php
+            $products = mysqli_query($koneksi, "SELECT * FROM product");
+            while($row = mysqli_fetch_assoc($products)) {
+                echo "<option value='".$row['id']."'>".$row['product_name']."</option>";
+            }
+            ?>
+        </select>
+        <input type="number" name="qty" id="qty" min="1" value="1">
+        <button type="submit">Add Order</button>
+    </form>
+
+    <!-- Tabel untuk menampilkan pesanan -->
+    <table id="orderTable">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total</td>
+                <td id="totalPay">0</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <script>
+        // Fungsi untuk mengambil detail produk dari server
+        async function getProductDetails(productId) {
+            const response = await $.ajax({
+                url: 'get_product.php',
+                type: 'POST',
+                data: { id: productId }
+            });
+            return JSON.parse(response);
+        }
+
+        // Fungsi untuk menambah order ke localStorage
+        async function addOrder(e) {
+            e.preventDefault();
+            
+            const productId = $('#product_id').val();
+            const qty = parseInt($('#qty').val());
+            
+            // Ambil detail produk
+            const product = await getProductDetails(productId);
+            
+            // Ambil data order yang sudah ada
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            // Tambah order baru
+            orders.push({
+                product_name: product.product_name,
+                price: parseFloat(product.price),
+                qty: qty,
+                subtotal: parseFloat(product.price) * qty
+            });
+            
+            // Simpan kembali ke localStorage
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            // Update tampilan tabel
+            updateTable();
+            
+            // Reset form
+            $('#qty').val(1);
+        }
+
+        // Fungsi untuk update tampilan tabel
+        function updateTable() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            let tbody = '';
+            let total = 0;
+            
+            orders.forEach(order => {
+                tbody += `
+                    <tr>
+                        <td>${order.product_name}</td>
+                        <td>${order.price}</td>
+                        <td>${order.qty}</td>
+                        <td>${order.subtotal}</td>
+                    </tr>
+                `;
+                total += order.subtotal;
+            });
+            
+            $('#orderTable tbody').html(tbody);
+            $('#totalPay').text(total);
+        }
+
+        // Event listener
+        $('#orderForm').on('submit', addOrder);
+
+        // Update tabel saat halaman dimuat
+        updateTable();
+
+        // Clear localStorage saat halaman di-refresh
+        window.onbeforeunload = function() {
+            localStorage.removeItem('orders');
+        }
+    </script>
+</body>
+</html>

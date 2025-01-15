@@ -1,10 +1,10 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="index.php" class="app-brand-link">
-            <span class="app-brand-logo demo">
-                <img src="../assets/img/backgrounds/side-logo-coffee.png" width="80" height="auto" alt="">
-            </span>
+        <a href="index.php" class="d-inline">
             <span class="app-brand-text demo menu-text fw-bolder ms-2 text-wrap fs-4" style="font-family:Playwrite AU SA, serif;">MY-Coffee</span>
+            <!-- <span class="app-brand-logo demo">
+                <img src="../assets/img/backgrounds/side-logo-coffee.png" width="80" height="auto" alt="">
+            </span> -->
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -99,22 +99,10 @@
 
         <!-- Extended components -->
         <li class="menu-item">
-            <a href="javascript:void(0)" class="menu-link menu-toggle">
+            <a href="../content/section-about.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-copy"></i>
-                <div data-i18n="Extended UI">Extended UI</div>
+                <div data-i18n="Extended UI">Edit Sugesstion</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="extended-ui-perfect-scrollbar.html" class="menu-link">
-                        <div data-i18n="Perfect Scrollbar">Perfect scrollbar</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="extended-ui-text-divider.html" class="menu-link">
-                        <div data-i18n="Text Divider">Text Divider</div>
-                    </a>
-                </li>
-            </ul>
         </li>
 
         <li class="menu-item">
