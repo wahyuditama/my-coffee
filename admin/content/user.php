@@ -1,37 +1,46 @@
 <?php
 include '../database/koneksi.php';
 session_start();
-//Tambah Customer
+//Tambah user
 if (isset($_POST['tambah'])) {
-    $customer_name = $_POST['customer_name'];
+    $username = $_POST['username'];
     $phone = $_POST['telepon'];
     $alamat = $_POST['alamat'];
+    $idLevel = $_POST['level'];
+    $email = $_POST['email'];
 
-    $insert = mysqli_query($koneksi, "INSERT INTO customer (customer_name, phone, address) VALUES ('$customer_name','$phone','$alamat')");
-    header("location: customer.php?input=berhasil");
+    $insert = mysqli_query($koneksi, "INSERT INTO user (id_level,username, phone, address, email) VALUES ('$idLevel','$username','$phone','$alamat','$email')");
+    header("location: user.php?input=berhasil");
 }
-//edit data customer
+// print_r($insert);
+// die();
+//edit data user
 $id = isset($_GET['edit']) ? $_GET['edit'] : '';
-$editData = mysqli_query($koneksi, "SELECT * FROM customer WHERE id='$id'");
+$editData = mysqli_query($koneksi, "SELECT * FROM user WHERE id='$id'");
 $rowEdit = mysqli_fetch_assoc($editData);
 
 if (isset($_POST['edit'])) {
-    $customer_name   = $_POST['customer_name'];
+    $username   = $_POST['username'];
     $phone = $_POST['telepon'];
     $alamat = $_POST['alamat'];
-    $update = mysqli_query($koneksi, "UPDATE customer SET customer_name='$customer_name', phone='$phone', address='$alamat' WHERE id='$id'");
-    header("location:customer.php?ubah=berhasil");
+    $email  = $_POST['email'];
+    $idLevel = $_POST['level'];
+    $update = mysqli_query($koneksi, "UPDATE user SET id_level='$idLevel', username='$username', phone='$phone', address='$alamat', email='$email' WHERE id='$id'");
+    header("location:user.php?ubah=berhasil");
 }
 
-//Delet Data Customer
+//Delet Data user
 
 $id_hapus = isset($_GET['delete']) ? $_GET['delete'] : '';
 if ($id_hapus) {
-    mysqli_query($koneksi, "DELETE FROM customer WHERE id='$id_hapus'");
-    header("location: customer.php?hapus=berhasil");
+    mysqli_query($koneksi, "DELETE FROM user WHERE id='$id_hapus'");
+    header("location: user.php?hapus=berhasil");
 }
-//Ambil data Customer
-$queryCustomer = mysqli_query($koneksi, "SELECT * FROM customer ORDER BY id DESC");
+//Ambil data user
+$queryuser = mysqli_query($koneksi, "SELECT * FROM user ORDER BY id DESC");
+
+//Ambil data level
+$level = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 
@@ -87,18 +96,18 @@ $queryCustomer = mysqli_query($koneksi, "SELECT * FROM customer ORDER BY id DESC
                         <?php if (isset($_GET['edit']) || isset($_GET['tambah'])) : ?>
                             <div class="row">
                                 <div class="card">
-                                    <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> Customer</div>
+                                    <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> user</div>
                                     <div class="card-body">
                                         <form action="" method="post">
                                             <div class="row">
                                                 <div class="col-md-6 mb-3">
-                                                    <label for="" class="form-label">Nama Customer</label>
+                                                    <label for="" class="form-label">Nama user</label>
                                                     <input type="text"
                                                         class="form-control"
-                                                        name="customer_name"
+                                                        name="username"
                                                         placeholder="Masukkan nama Pelanggan"
                                                         required
-                                                        value="<?php echo isset($_GET['edit']) ? $rowEdit['customer_name'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                                        value="<?php echo isset($_GET['edit']) ? $rowEdit['username'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
                                                     <label for="" class="form-label">Nomor Telepon</label>
@@ -120,6 +129,30 @@ $queryCustomer = mysqli_query($koneksi, "SELECT * FROM customer ORDER BY id DESC
                                                         required
                                                         value="<?php echo isset($_GET['edit']) ? $rowEdit['address'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
                                                 </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="" class="mb-1">Pilih Level</label>
+                                                    <select name="level" id="" class="form-control">
+                                                        <?php
+                                                        while ($rowLevel = mysqli_fetch_assoc($level)) { ?>
+                                                            <option value="<?php echo $rowLevel['id'] ?>" <?php echo isset($_GET['edit']) && $rowEdit['id_level'] == $rowLevel['id'] ? 'selected' : '' ?>>
+                                                                <?php echo $rowLevel['level_name'] ?>
+                                                            </option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="" class="form-label">Masukkan Enail</label>
+                                                    <input type="email"
+                                                        class="form-control"
+                                                        name="email"
+                                                        placeholder="Masukkan Alamat Email"
+                                                        required
+                                                        value="<?php echo isset($_GET['edit']) ? $rowEdit['email'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                                </div>
+
                                             </div>
                                             <button type="submit" name="<?php echo isset($_GET['edit']) ? 'edit' : 'tambah' ?>" class="btn-sm btn-primary">Submit</button>
                                         </form>
@@ -132,8 +165,8 @@ $queryCustomer = mysqli_query($koneksi, "SELECT * FROM customer ORDER BY id DESC
                                     <div class="card">
                                         <div class="card-header">
                                             <div class="d-flex justify-content-between">
-                                                <a href="?true" class="btn btn-sm mb-3">Data Customers</a>
-                                                <a href="customer.php?tambah" class="btn btn-primary btn-sm mb-3">Tambah Customer</a>
+                                                <a href="?true" class="btn btn-sm mb-3">Data users</a>
+                                                <a href="user.php?tambah" class="btn btn-primary btn-sm mb-3">Tambah user</a>
                                             </div>
                                             <?php if (isset($_GET['hapus'])): ?>
                                                 <div class="alert alert-success" role="alert">
@@ -155,15 +188,15 @@ $queryCustomer = mysqli_query($koneksi, "SELECT * FROM customer ORDER BY id DESC
                                                 <tbody>
                                                     <?php
                                                     $no = 1;
-                                                    while ($rowCustomer = mysqli_fetch_assoc($queryCustomer)) { ?>
+                                                    while ($rowuser = mysqli_fetch_assoc($queryuser)) { ?>
                                                         <tr>
                                                             <td><?php echo $no++ ?></td>
-                                                            <td><?php echo $rowCustomer['customer_name'] ?></td>
-                                                            <td><?php echo $rowCustomer['phone'] ?></td>
-                                                            <td><?php echo $rowCustomer['address'] ?></td>
+                                                            <td><?php echo $rowuser['username'] ?></td>
+                                                            <td><?php echo $rowuser['phone'] ?></td>
+                                                            <td><?php echo $rowuser['address'] ?></td>
                                                             <td>
-                                                                <a href="?edit=<?php echo $rowCustomer['id'] ?>" class="btn-sm btn-success bx bx-pencil"></a>
-                                                                <a href="?delete=<?php echo $rowCustomer['id'] ?>" class="btn-sm btn-danger bx bx-trash"></a>
+                                                                <a href="?edit=<?php echo $rowuser['id'] ?>" class="btn-sm btn-success bx bx-pencil"></a>
+                                                                <a href="?delete=<?php echo $rowuser['id'] ?>" class="btn-sm btn-danger bx bx-trash"></a>
                                                             </td>
                                                         </tr>
                                                     <?php } ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2025 at 07:33 PM
+-- Generation Time: Jan 21, 2025 at 06:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -70,32 +70,6 @@ INSERT INTO `category` (`id`, `name_category`, `description`, `update_at`) VALUE
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer`
---
-
-CREATE TABLE `customer` (
-  `id` int(12) NOT NULL,
-  `customer_name` varchar(50) NOT NULL,
-  `phone` varchar(50) NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `customer`
---
-
-INSERT INTO `customer` (`id`, `customer_name`, `phone`, `address`, `create_at`, `update_at`) VALUES
-(1, 'oji yimeng', '434544', 'Tegal Alur', '2024-11-20 04:01:58', '2025-01-04 15:16:14'),
-(2, 'Rudi Ruyatno', '783493450', 'Parang Tegal', '2024-11-21 04:26:37', '2025-01-04 15:16:19'),
-(3, 'Rizky Balistik', '5467898', 'Uhledar', '2024-11-21 06:58:25', '2025-01-04 15:16:27'),
-(4, 'Edwars Mujaer', '5456776878', 'Rock Bottom', '2024-11-21 07:09:13', '2025-01-04 15:16:31'),
-(5, 'achmat Tornado', '09823423', 'jakarta', '2024-11-23 05:35:11', '2025-01-04 15:16:36');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `detail_order`
 --
 
@@ -105,10 +79,23 @@ CREATE TABLE `detail_order` (
   `id_product` int(12) NOT NULL,
   `qty` int(100) NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `subtotal` decimal(10,2) NOT NULL,
+  `payment` decimal(10,2) NOT NULL,
+  `refund` decimal(10,2) NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `detail_order`
+--
+
+INSERT INTO `detail_order` (`id`, `id_order`, `id_product`, `qty`, `price`, `payment`, `refund`, `create_at`, `update_at`) VALUES
+(107, 133, 3, 1, 15000.00, 20000.00, 5000.00, '2025-01-18 13:23:53', '2025-01-18 13:23:53'),
+(108, 134, 5, 1, 63000.00, 65000.00, 2000.00, '2025-01-21 15:36:20', '2025-01-21 15:36:20'),
+(109, 134, 4, 1, 63000.00, 65000.00, 2000.00, '2025-01-21 15:36:20', '2025-01-21 15:36:20'),
+(110, 134, 3, 1, 63000.00, 65000.00, 2000.00, '2025-01-21 15:36:20', '2025-01-21 15:36:20'),
+(130, 153, 2, 2, 43000.00, 50000.00, 7000.00, '2025-01-21 16:59:53', '2025-01-21 16:59:53'),
+(131, 153, 5, 2, 43000.00, 50000.00, 7000.00, '2025-01-21 16:59:53', '2025-01-21 16:59:53');
 
 -- --------------------------------------------------------
 
@@ -134,10 +121,10 @@ INSERT INTO `level` (`id`, `level_name`, `create_at`, `update_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order`
+-- Table structure for table `orders`
 --
 
-CREATE TABLE `order` (
+CREATE TABLE `orders` (
   `id` int(12) NOT NULL,
   `id_user` int(12) NOT NULL,
   `order_code` varchar(100) NOT NULL,
@@ -148,21 +135,14 @@ CREATE TABLE `order` (
   `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `payment`
+-- Dumping data for table `orders`
 --
 
-CREATE TABLE `payment` (
-  `id` int(12) NOT NULL,
-  `id_order` int(12) NOT NULL,
-  `payment_date` int(100) NOT NULL,
-  `jumlah` decimal(10,2) NOT NULL,
-  `status` tinyint(2) NOT NULL,
-  `create_at` timestamp NULL DEFAULT current_timestamp(),
-  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `orders` (`id`, `id_user`, `order_code`, `order_date`, `status`, `total_price`, `create_at`, `update_at`) VALUES
+(133, 2, 'INV/18012025/001', '2025-01-10', 0, 15000.00, '2025-01-18 13:23:53', '2025-01-21 15:17:19'),
+(134, 3, 'INV/21012025/001', '2025-01-12', 1, 63000.00, '2025-01-21 15:36:20', '2025-01-21 15:51:05'),
+(153, 4, 'INV/21012025/001', '2025-01-21', 0, 43000.00, '2025-01-21 16:59:53', '2025-01-21 17:01:57');
 
 -- --------------------------------------------------------
 
@@ -187,7 +167,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `id_category`, `product_name`, `description`, `price`, `image`, `stock`, `created_at`, `update_at`) VALUES
-(1, 1, 'Coffee Espresso', 'lorem ipsum dolor site amet                                                                         ', 20000.00, 'img1.jpg', 12, '2025-01-11 08:09:52', '2025-01-11 09:39:34'),
+(1, 1, 'Coffee Espresso', 'lorem ipsum dolor site amet                                                                         ', 20000.00, 'img3.jpg', 12, '2025-01-11 08:09:52', '2025-01-18 10:54:06'),
 (2, 2, 'Americano', '                                                                                                    ', 11000.00, 'img2.jpg', 12, '2025-01-11 08:27:27', '2025-01-11 09:40:01'),
 (3, 3, 'coffee ice vanila', '                                                        ', 15000.00, 'img2.jpg', 15, '2025-01-11 08:28:28', '2025-01-11 08:28:28'),
 (4, 1, 'coffee hot caramell', '                                                        ', 16000.00, 'img3.jpg', 13, '2025-01-11 08:29:10', '2025-01-11 08:29:10'),
@@ -202,8 +182,10 @@ INSERT INTO `product` (`id`, `id_category`, `product_name`, `description`, `pric
 CREATE TABLE `user` (
   `id` int(12) NOT NULL,
   `id_level` int(12) NOT NULL,
-  `username` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `password` varchar(100) NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -213,8 +195,11 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `id_level`, `username`, `email`, `password`, `create_at`, `update_at`) VALUES
-(1, 1, 'admin', 'admin@gmail.com', '123', '2024-12-24 02:45:59', '2024-12-24 02:45:59');
+INSERT INTO `user` (`id`, `id_level`, `username`, `phone`, `address`, `email`, `password`, `create_at`, `update_at`) VALUES
+(1, 1, 'admin', '84895395', 'Cirebon', 'admin@gmail.com', '123', '2025-01-17 14:51:31', '2025-01-17 15:25:06'),
+(2, 2, 'Jasen Yurhadi', '03947488', 'Jakarta', 'jasen@gmail.com', '123', '2025-01-17 15:24:12', '2025-01-18 12:05:29'),
+(3, 2, 'Doni Iryawan', '03947488', 'Tangerang', '', '', '2025-01-18 11:16:58', '2025-01-21 15:50:53'),
+(4, 2, 'Yohana Rahmadi', '03947488', 'Bandung', 'Yohana@gmail.com', '', '2025-01-21 17:01:04', '2025-01-21 17:01:35');
 
 --
 -- Indexes for dumped tables
@@ -233,12 +218,6 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `customer`
---
-ALTER TABLE `customer`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `detail_order`
 --
 ALTER TABLE `detail_order`
@@ -253,18 +232,11 @@ ALTER TABLE `level`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `order`
+-- Indexes for table `orders`
 --
-ALTER TABLE `order`
+ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_user` (`id_user`);
-
---
--- Indexes for table `payment`
---
-ALTER TABLE `payment`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_order` (`id_order`);
 
 --
 -- Indexes for table `product`
@@ -278,7 +250,7 @@ ALTER TABLE `product`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_ibfk_1` (`id_level`);
+  ADD KEY `id_level` (`id_level`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -297,16 +269,10 @@ ALTER TABLE `category`
   MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `customer`
---
-ALTER TABLE `customer`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
 -- AUTO_INCREMENT for table `detail_order`
 --
 ALTER TABLE `detail_order`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
 -- AUTO_INCREMENT for table `level`
@@ -315,16 +281,10 @@ ALTER TABLE `level`
   MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `order`
+-- AUTO_INCREMENT for table `orders`
 --
-ALTER TABLE `order`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `payment`
---
-ALTER TABLE `payment`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `orders`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -336,7 +296,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
@@ -346,20 +306,14 @@ ALTER TABLE `user`
 -- Constraints for table `detail_order`
 --
 ALTER TABLE `detail_order`
-  ADD CONSTRAINT `detail_order_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `detail_order_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `detail_order_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `order`
+-- Constraints for table `orders`
 --
-ALTER TABLE `order`
-  ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `payment`
---
-ALTER TABLE `payment`
-  ADD CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `product`
