@@ -2,9 +2,7 @@
 include '../database/koneksi.php';
 session_start();
 
-// jika button simpan di tekan
 if (isset($_POST['simpan'])) {
-    $id = $_POST['id_category'];
     $namaProduk = $_POST['nama_product'];
     $deskripsi = $_POST['deskripsi'];
     $price = $_POST['price'];
@@ -22,25 +20,25 @@ if (isset($_POST['simpan'])) {
             die();
         } else {
             move_uploaded_file($_FILES['foto']['tmp_name'], '../upload/' . $foto);
-            $queryAddProduct = mysqli_query($koneksi, "INSERT INTO product (id_category,product_name,description,price,stock,image) VALUES ('$id','$namaProduk','$deskripsi','$price','$stok','$foto')");
+            $queryBrand = mysqli_query($koneksi, "INSERT INTO brand (product_name,description,price,stock,image) VALUES ('$namaProduk','$deskripsi','$price','$stok','$foto')");
         }
     } else {
-        $queryAddProduct = mysqli_query($koneksi, " INSERT INTO product (id_category,product_name,description,price,stock) VALUES ('$id','$namaProduk','$deskripsi','$price','$stok')");
+        $queryBrand = mysqli_query($koneksi, " INSERT INTO brand (product_name,description,price,stock) VALUES ('$namaProduk','$deskripsi','$price','$stok')");
     }
-    header('location: product.php?add=success');
+
+    header('location: brand.php?add=success');
     exit();
 }
 
 
 $id  = isset($_GET['edit']) ? $_GET['edit'] : '';
-$queryEdit = mysqli_query($koneksi, "SELECT category.name_category, product.* FROM product LEFT JOIN category ON product.id_category = category.id WHERE product.id ='$id'");
+$queryEdit = mysqli_query($koneksi, "SELECT * FROM brand WHERE id='$id'");
 $rowEdit   = mysqli_fetch_assoc($queryEdit);
 
 
 // jika button edit di klik
 
 if (isset($_POST['edit'])) {
-    $id = $_POST['id_category'];
     $namaProduk = $_POST['nama_product'];
     $deskripsi = $_POST['deskripsi'];
     $price = $_POST['price'];
@@ -71,15 +69,14 @@ if (isset($_POST['edit'])) {
         }
     }
 
-    $update = mysqli_query($koneksi, "UPDATE product SET
-     id_category='$id',
+    $update = mysqli_query($koneksi, "UPDATE brand SET
      product_name='$namaProduk',
      description='$deskripsi',
      price='$price',
      image='$foto',
      stock='$stok'
      WHERE id='$id'");
-    header("location:product.php?change=success");
+    header("location:brand.php?change=success");
 }
 
 
@@ -88,17 +85,33 @@ if (isset($_GET['delete'])) {
     $id = $_GET['delete']; //mengambil nilai params
 
     // query / perintah hapus
-    $delete = mysqli_query($koneksi, "DELETE FROM product  WHERE id ='$id'");
-    header("location:category.php?hapus=berhasil");
+    $delete = mysqli_query($koneksi, "DELETE FROM brand  WHERE id ='$id'");
+    header("location:brand.php?hapus=berhasil");
 }
 
-// ambil data dari category dan product untuk tampilan depan
-$selectCategory = mysqli_query($koneksi, "SELECT category.name_category, product.* FROM product LEFT JOIN category ON product.id_category = category.id ");
-//ambil data dari category untuk di tambah kategori
-$insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
+// ambil data brand
+
+$brand = mysqli_query($koneksi, "SELECT * FROM brand ORDER BY id DESC");
+
+$selectBrand = [];
+while ($row = mysqli_fetch_assoc($brand)) {
+    $selectBrand[] = $row;
+}
 ?>
 <!DOCTYPE html>
 
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
+
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
+
+=========================================================
+ -->
+<!-- beautify ignore:start -->
 <html
     lang="en"
     class="light-style layout-menu-fixed"
@@ -135,10 +148,16 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                 <div class="content-wrapper">
                     <!-- Content -->
 
-                    <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="row">
-                            <?php if (isset($_GET['edit']) || isset($_GET['tambah']) || isset($_GET['detail'])) : ?>
-                                <!-- Tambah & Edit Barang -->
+                    <div class="container-xl flex-grow-1 container-p-y">
+                        <div class="card p-3">
+                            <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Icons /</span> Logo Brand</h4>
+                            <?php if ($_SESSION['level_id'] == 1) : ?>
+                                <p>
+                                    <a href="?tambah" class="btn-sm btn-primary">add-Brand</a>
+                                </p>
+                            <?php endif ?>
+                            <!-- Icon container -->
+                            <?php if (isset($_GET['tambah']) || isset($_GET['edit'])) : ?>
                                 <div class="col-sm-12">
                                     <div class="card">
                                         <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> Kategori Barang</div>
@@ -148,19 +167,8 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                     Data berhasil dihapus
                                                 </div>
                                             <?php endif ?>
-
                                             <form action="" method="post" enctype="multipart/form-data">
                                                 <div class="mb-3 row">
-                                                    <div class="col-sm-6">
-                                                        <label for="" class="form-label">Pilih Kategori</label>
-                                                        <select name="id_category" id="kategori" class="form-control" <?php echo isset($_GET['detail']) ? 'disabled' : '' ?>>
-                                                            <option value="" <?php echo isset($_GET['detail']) ? 'disabled' : '' ?>><?php echo isset($_GET['edit']) ? $rowEdit['name_category'] : '--Pilih Kategori--' ?></option>
-                                                            <?php while ($rowCategory = mysqli_fetch_assoc($insertCategory)) {
-                                                                $select = isset($_GET['edit']) && $rowCategory['id'] == $rowEdit['id_category'] ? 'selected' : '' ?>
-                                                                <option value="<?php echo $rowCategory['id'] ?>" <?php echo $select; ?>> <?php echo $rowCategory['name_category'] ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
                                                     <div class="col-sm-6">
                                                         <label for="" class="form-label">Nama Produk</label>
                                                         <input type="text"
@@ -170,8 +178,6 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                             required
                                                             value="<?php echo isset($_GET['edit']) ? $rowEdit['product_name'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
                                                     </div>
-                                                </div>
-                                                <div class="mb-3 row">
                                                     <div class="col-sm-6">
                                                         <label for="" class="form-label">Deskripsi Produk</label>
                                                         <textarea
@@ -179,16 +185,24 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                             name="deskripsi"
                                                             placeholder="Masukkan deskripsi barang" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>><?php echo isset($_GET['edit']) ? $rowEdit['description'] : '' ?>
                                                         </textarea>
-
                                                     </div>
+                                                </div>
+                                                <div class="mb-3 row">
                                                     <div class="col-sm-6">
                                                         <label for="" class="form-label">Harga Product</label>
                                                         <input type="number"
                                                             class="form-control"
                                                             name="price"
                                                             placeholder="Masukkan harga barang"
-                                                            required
                                                             value="<?php echo isset($_GET['edit']) ? $rowEdit['price'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label for="" class="form-label">Stok Produk</label>
+                                                        <input type="number"
+                                                            class="form-control"
+                                                            name="stock"
+                                                            placeholder="Masukkan stock barang"
+                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['stock'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3 row">
@@ -206,15 +220,6 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                             <img src="../upload/<?php echo $rowEdit['image'] ?>" width="100" height="auto" class="mt-2" alt="">
                                                         <?php endif ?>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <label for="" class="form-label">Stok Produk</label>
-                                                        <input type="number"
-                                                            class="form-control"
-                                                            name="stock"
-                                                            placeholder="Masukkan stock barang"
-                                                            required
-                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['stock'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
-                                                    </div>
                                                 </div>
                                                 <div class="my-3">
                                                     <?php if (!isset($_GET['detail'])) : ?>
@@ -223,7 +228,7 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                         </button>
                                                     <?php endif ?>
                                                     <?php if (isset($_GET['detail'])) : ?>
-                                                        <a href="../content/product.php" class="btn-sm btn-secondary">Kembali</a>
+                                                        <a href="../content/brand.php" class="btn-sm btn-secondary">Kembali</a>
                                                     <?php endif ?>
                                                 </div>
                                             </form>
@@ -231,72 +236,44 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                     </div>
                                 </div>
                             <?php else : ?>
-                                <!-- Tampilkan data product -->
-                                <div class="col-sm-12">
-                                    <div class="card">
-                                        <div class="card-header border-bottom">Kategori Coffee</div>
-                                        <div class="card-body">
-                                            <?php if (isset($_GET['hapus'])): ?>
-                                                <div class="alert alert-success" role="alert">
-
+                                <div class="d-flex flex-wrap justify-content-center" id="icons-container">
+                                    <?php foreach ($selectBrand as $rowBrand) : ?>
+                                        <div class="card icon-card cursor-pointer text-center mb-4 m-3 shadow-sm bg-body-tertiary rounded">
+                                            <div class="card-body">
+                                                <i class="bx bxl-adobe mb-2"></i>
+                                                <p class="icon-name text-capitalize text-truncate mb-0"><?php echo $rowBrand['product_name'] ?></p>
+                                                <button type="button" class="btn-sm btn-outline-primary border-top" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $rowBrand['id'] ?>">
+                                                    Lihat selengkapnya
+                                                </button>
+                                            </div>
+                                            <?php if ($_SESSION['user_id'] == 1): ?>
+                                                <div class="card-footer">
+                                                    <a href="brand.php?edit=<?php echo $rowBrand['id'] ?>" class="btn-sm btn-success btn-sm">
+                                                        <span class="tf-icon bx bx-pencil bx-18px "></span>
+                                                    </a>
+                                                    <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
+                                                        href="brand.php?delete=<?php echo $rowBrand['id'] ?>" class="btn-sm btn-danger btn-sm">
+                                                        <span class="tf-icon bx bx-trash bx-18px "></span>
+                                                    </a>
                                                 </div>
                                             <?php endif ?>
-                                            <div align="right" class="mb-3">
-                                                <a href="product.php?tambah" class="btn btn-primary mt-2">Tambah</a>
-                                            </div>
-                                            <table class="table table-bordered text-wrap">
-                                                <thead>
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Kategori Barang</th>
-                                                        <th>Nama Barang</th>
-                                                        <th>Harga Barang</th>
-                                                        <th style="width:30rem;">Deskripsi Barang</th>
-                                                        <th>Aksi</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php $no = 1;
-                                                    while ($rowProduct = mysqli_fetch_assoc($selectCategory)) { ?>
-                                                        <tr>
-                                                            <td><?php echo $no++ ?></td>
-                                                            <td><?php echo $rowProduct['name_category'] ?></td>
-                                                            <td><?php echo $rowProduct['product_name'] ?></td>
-                                                            <td><?php echo $rowProduct['price'] ?></td>
-                                                            <td><?php echo $rowProduct['description'] ?></td>
-                                                            <td>
-                                                                <a href="product.php?edit=<?php echo $rowProduct['id'] ?>&detail=<?php echo $rowProduct['id'] ?>" class="btn btn-primary btn-sm">
-                                                                    <span class="tf-icon bx bx-show bx-18px "></span>
-                                                                </a>
-                                                                <a href="product.php?edit=<?php echo $rowProduct['id'] ?>" class="btn btn-success btn-sm">
-                                                                    <span class="tf-icon bx bx-pencil bx-18px "></span>
-                                                                </a>
-                                                                <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
-                                                                    href="product.php?delete=<?php echo $rowProduct['id'] ?>" class="btn btn-danger btn-sm">
-                                                                    <span class="tf-icon bx bx-trash bx-18px "></span>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    <?php } ?>
-                                                </tbody>
-                                            </table>
                                         </div>
-                                    </div>
+                                    <?php endforeach ?>
                                 </div>
                             <?php endif ?>
                         </div>
-                        <div class="row">
-                        </div>
+
                     </div>
                     <!-- / Content -->
 
-                    <div class="content-backdrop fade"></div>
+                    <!-- / Content -->
 
+                    <!-- Footer -->
+                    <?php include '../layout/footer.php' ?>
+                    <!-- / Footer -->
+
+                    <div class="content-backdrop fade"></div>
                 </div>
-                <!-- Footer -->
-                <?php include '../layout/footer.php' ?>
-                <!-- / Footer -->
                 <!-- Content wrapper -->
             </div>
             <!-- / Layout page -->
@@ -313,9 +290,29 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
             target="_blank"
             class="btn btn-danger btn-buy-now">Welcome to MY-Coffee</a>
     </div>
+    <!-- modal -->
+    <?php foreach ($selectBrand as $key) : ?>
+        <div class="modal fade" id="exampleModal<?php echo $key['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php echo $key['description'] ?></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach ?>
+
 
     <?php include '../layout/js.php' ?>
-
 </body>
 
 </html>

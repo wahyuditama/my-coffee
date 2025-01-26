@@ -11,7 +11,7 @@
         <nav id="navmenu" class="navmenu">
             <ul>
                 <li><a href="../../index.php">Home<br></a></li>
-                <li><a href="about.php" class="active">About</a></li>
+                <li><a href="about.php">About</a></li>
                 <li><a href="services.php">Services</a></li>
                 <li><a href="contact.php">Contact</a></li>
             </ul>
@@ -23,7 +23,7 @@
             <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
             <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
             <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-            <a href="../../admin/content/login.php" class="">Login</i></a>
+            <a href="../../admin/auth/login.php" class="">Login</i></a>
         </div>
 
     </div>

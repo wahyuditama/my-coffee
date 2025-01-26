@@ -1,6 +1,6 @@
 <?php
 include '../database/koneksi.php';
-include '../layout/helper.php';
+// include '../layout/helper.php';
 session_start();
 
 $queryOrder = mysqli_query($koneksi, "SELECT * FROM product");
@@ -47,11 +47,11 @@ if (isset($_POST['simpan'])) {
 
     header("Location: product_pay.php?detail=" . $id_order . "&id=" . $user);
     exit();
-
-    // print_r($result);
-    // die();
 }
+// var_dump($_SESSION['idOrder']);
 
+// print_r($result);
+// die();
 
 ?>
 <!DOCTYPE html>
@@ -107,82 +107,87 @@ if (isset($_POST['simpan'])) {
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <form action="" method="post" enctype="multipart/form-data">
                             <div class="row">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="card">
-                                            <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> Transaksi</div>
-                                            <div class="card-body">
-                                                <?php if (isset($_GET['hapus'])): ?>
-                                                    <div class="alert alert-success" role="alert">
-                                                        Data berhasil dihapus
-                                                    </div>
-                                                <?php endif ?>
+                                <div class="card p-3">
+                                    <div class="row">
+                                        <?php if (!empty($_SESSION['orders_id'])) :  ?>
+                                            <a href="product_pay.php?detail=<?php echo $_SESSION['orders_id'] ?>&id=<?php echo $_SESSION['user_id'] ?>" class="btn-sm btn-danger">Pembelian Anda</a>
+                                        <?php endif ?>
+                                        <div class="col-sm-6">
+                                            <div class="card">
+                                                <div class="card-header">Tambah Transaksi</div>
+                                                <div class="card-body">
+                                                    <?php if (isset($_GET['hapus'])): ?>
+                                                        <div class="alert alert-success" role="alert">
+                                                            Data berhasil dihapus
+                                                        </div>
+                                                    <?php endif ?>
 
-                                                <div class="mb-3 row">
-                                                    <div class="col-sm-12">
-                                                        <label for="" class="form-label"> customer</label>
-                                                        <input type="text" class="form-control" name="id_user" value="<?php echo $_SESSION['nama'] ?>" readonly>
-                                                        <input type="hidden" name="id_user" value="<?php echo $_SESSION['level_id'] ?>">
+                                                    <div class="mb-3 row">
+                                                        <div class="col-sm-12">
+                                                            <label for="" class="form-label"> customer</label>
+                                                            <input type="text" class="form-control" name="id_user" value="<?php echo $_SESSION['nama'] ?>" readonly>
+                                                            <input type="hidden" name="id_user" value="<?php echo $_SESSION['user_id'] ?>">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <div class="col-sm-6">
-                                                        <label for="" class="form-label">No Invoice</label>
-                                                        <input type="text" class="form-control" name="order_code" value="<?php echo $codeInput ?>" readonly>
+                                                    <div class="mb-3 row">
+                                                        <div class="col-sm-6">
+                                                            <label for="" class="form-label">No Invoice</label>
+                                                            <input type="text" class="form-control" name="order_code" value="<?php echo $codeInput ?>" readonly>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="" class="form-label">Tanggal</label>
+                                                            <input type="date"
+                                                                class="form-control"
+                                                                name="date"
+                                                                placeholder="Masukkan tanggal"
+                                                                value="">
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <label for="" class="form-label">Tanggal</label>
-                                                        <input type="date"
-                                                            class="form-control"
-                                                            name="date"
-                                                            placeholder="Masukkan tanggal"
-                                                            value="">
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <div class="col-sm-12">
-                                                        <label for="" class="form-label">Keterangan</label>
-                                                        <input type="text"
-                                                            name="keterangan"
-                                                            placeholder="Tulis Keterangan atau Note disini"
-                                                            class=" form-control"
-                                                            id="">
+                                                    <div class="mb-3 row">
+                                                        <div class="col-sm-12">
+                                                            <label for="" class="form-label">Keterangan</label>
+                                                            <input type="text"
+                                                                name="keterangan"
+                                                                placeholder="Tulis Keterangan atau Note disini"
+                                                                class=" form-control"
+                                                                id="">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!--  -->
-                                    <div class="col-sm-6">
-                                        <div class="card mb-3">
-                                            <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Silahakn' ?> Pilih Produk</div>
-                                            <div class="card-body">
-                                                <?php if (isset($_GET['hapus'])): ?>
-                                                    <div class="alert alert-success" role="alert">
-                                                        Data berhasil dihapus
+                                        <!--  -->
+                                        <div class="col-sm-6">
+                                            <div class="card mb-3">
+                                                <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Silahakn' ?> Pilih Produk</div>
+                                                <div class="card-body">
+                                                    <?php if (isset($_GET['hapus'])): ?>
+                                                        <div class="alert alert-success" role="alert">
+                                                            Data berhasil dihapus
+                                                        </div>
+                                                    <?php endif ?>
+                                                    <div class="mb-2 row">
+                                                        <label class="col-sm-2 col-form-label">Tambah Product</label>
+                                                        <div class="col-sm-10">
+                                                            <select id="product-select" class="form-select">
+                                                                <option value="" data-price="0">Pilih Product</option>
+                                                                <?php foreach ($resultOrders as $value) { ?>
+                                                                    <option value="<?php echo $value['id'] ?>" data-price="<?php echo $value['price'] ?>" data-id="<?php echo $value['id'] ?>">
+                                                                        <?php echo $value['product_name'] ?>
+                                                                    </option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                <?php endif ?>
-                                                <div class="mb-2 row">
-                                                    <label class="col-sm-2 col-form-label">Tambah Product</label>
-                                                    <div class="col-sm-10">
-                                                        <select id="product-select" class="form-select">
-                                                            <option value="" data-price="0">Pilih Product</option>
-                                                            <?php foreach ($resultOrders as $value) { ?>
-                                                                <option value="<?php echo $value['id'] ?>" data-price="<?php echo $value['price'] ?>" data-id="<?php echo $value['id'] ?>">
-                                                                    <?php echo $value['product_name'] ?>
-                                                                </option>
-                                                            <?php } ?>
-                                                        </select>
+                                                    <div class="mb-2 row">
+                                                        <label class="col-sm-2 col-form-label">Qty</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="number" name="qty" id="product-qty" class="form-control" value="">
+                                                            <!-- <input type="hidden" name="qty" id="total-qty"> -->
+                                                        </div>
                                                     </div>
+                                                    <button type="button" id="add-order" name="simpan" class="btn-sm btn-primary">Tambah</button>
                                                 </div>
-                                                <div class="mb-2 row">
-                                                    <label class="col-sm-2 col-form-label">Qty</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="number" name="qty" id="product-qty" class="form-control" value="">
-                                                        <!-- <input type="hidden" name="qty" id="total-qty"> -->
-                                                    </div>
-                                                </div>
-                                                <button type="button" id="add-order" name="simpan" class="btn-sm btn-primary">Tambah</button>
                                             </div>
                                         </div>
                                     </div>

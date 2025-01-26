@@ -1,5 +1,6 @@
 <?php
 include '../database/koneksi.php';
+// session_start();
 
 $queryProductPay = mysqli_query($koneksi, "SELECT user.username, orders.id as order_id, orders.* FROM orders 
 left JOIN user ON orders.id_user = user.id");
@@ -7,6 +8,7 @@ $result = [];
 while ($rowProductPay = mysqli_fetch_assoc($queryProductPay)) {
     $result[] = $rowProductPay;
 }
+
 
 // Query Untuk Detail Pembelian
 $idDetail = isset($_GET['detail']) ? $_GET['detail'] : '';

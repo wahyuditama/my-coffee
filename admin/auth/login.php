@@ -6,17 +6,21 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $queryLogin = mysqli_query($koneksi, "SELECT * FROM user");
+    $queryLogin = mysqli_query($koneksi, "SELECT orders.id as id_orders, user.* FROM user LEFT JOIN orders ON user.id = orders.id_user ");
 
-    if ($queryLogin) {
-        $selectLogin = mysqli_fetch_assoc($queryLogin);
-        if ($password == $selectLogin['password'] || $email == $selectLogin['email']) {
-            $_SESSION['level_id'] = $selectLogin['id_level'];
-            $_SESSION['nama'] = $selectLogin['username'];
-            $_SESSION['Email'] = $selectLogin['email'];
-            header('Location: index.php');
+    while ($rowLogin = mysqli_fetch_assoc($queryLogin)) {
+        if ($rowLogin['email'] == $email && $rowLogin['password'] == $password) {
+            $_SESSION['orders_id'] = $rowLogin['id_orders'];
+            $_SESSION['user_id'] = $rowLogin['id'];
+            $_SESSION['level_id'] = $rowLogin['id_level'];
+            $_SESSION['nama'] = $rowLogin['username'];
+            $_SESSION['Email'] = $rowLogin['email'];
+
+            header('Location: ../content/index.php');
+            exit();
         }
     }
+    header('Location: login.php?login=gagal');
 }
 ?>
 
@@ -149,7 +153,7 @@ if (isset($_POST['login'])) {
 
                         <p class="text-center">
                             <span>New on our platform?</span>
-                            <a href="auth-register-basic.html">
+                            <a href="register.php">
                                 <span>Create an account</span>
                             </a>
                         </p>

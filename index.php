@@ -66,7 +66,7 @@ $queryImages = mysqli_query($koneksi, "SELECT * FROM product");
         <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
         <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
         <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-        <a href="admin/content/login.php" class="">Login</i></a>
+        <a href="admin/auth/login.php" class="">Login</i></a>
       </div>
 
     </div>

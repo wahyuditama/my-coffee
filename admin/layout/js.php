@@ -24,3 +24,23 @@
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<script>
+    function printElement(elementId) {
+        // Ambil elemen berdasarkan ID
+        const printContent = document.getElementById(elementId);
+        const originalContent = document.body.innerHTML;
+
+        // Ganti konten body dengan elemen yang ingin dicetak
+        document.body.innerHTML = printContent.outerHTML;
+
+        // Cetak halaman
+        window.print();
+
+        // Kembalikan konten body seperti semula
+        document.body.innerHTML = originalContent;
+
+        // Reload halaman untuk memulihkan event listener (jika ada)
+        window.location.reload();
+    }
+</script>

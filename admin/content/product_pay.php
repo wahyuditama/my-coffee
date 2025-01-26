@@ -19,6 +19,7 @@ if (isset($_GET['delete'])) {
 }
 // print_r($updateStatus);
 // die();
+
 ?>
 <!DOCTYPE html>
 
@@ -74,19 +75,21 @@ if (isset($_GET['delete'])) {
                         <div class="row">
                             <div class="card">
                                 <div class="card-body">
-                                    <?php if (isset($_GET['detail']) || isset($_GET['id'])) : ?>
+                                    <?php if (isset($_GET['detail']) || isset($_GET['id']) || isset($_GET['print'])) : ?>
                                         <div class="container-xxl flex-grow-1 container-p-y">
-                                            <div class="row">
+                                            <div class="row" id="print">
                                                 <div class="col-sm-12 mb-3">
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <div class="row">
-                                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                                    <h5 class="m-0 p-0">Transaksi Pembelian :</h5>
+                                                                <div class="col-sm-6 mb-sm-0">
+                                                                    <h5 class="m-0 p-0">Data Pembelian : </h5>
                                                                 </div>
-                                                                <div class="col-sm-6 mb-3 mb-sm-0" align="right">
-                                                                    <a href="?" class="btn btn-secondary"><i class='bx bx-arrow-back'></i></a>
-                                                                </div>
+                                                                <?php if ($_SESSION['level_id'] == 1): ?>
+                                                                    <div class="col-sm-6 mb-3 mb-sm-0" align="right">
+                                                                        <a href="?" class="btn btn-secondary"><i class='bx bx-arrow-back'></i></a>
+                                                                    </div>
+                                                                <?php endif ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -191,8 +194,10 @@ if (isset($_GET['delete'])) {
                                                                         </td>
                                                                     </tr>
                                                                     <td colspan="5">
-                                                                        <a href="print.php?id=<?php echo $result[0]['order_id'] ?>" class="btn-sm p-2 me-3 btn-success"><i class='bx bx-printer me-2'></i>Cetak Struk</a>
-                                                                        <a href="print.php?id=<?php echo $result[0]['order_id'] ?>" class="btn-sm p-2 btn-secondary"><i class='bx bx-home me-2'></i>Home</a>
+                                                                        <?php if ($resultDetail[0]['status'] == 1):  ?>
+                                                                            <a href="?print=<?php echo $result[0]['order_id'] ?>&id=<?php echo $values['id_user'] ?>" class=" btn-sm p-2 me-3 btn-success" onclick="printElement('print')" id="print"><i class='bx bx-printer me-2'></i>Cetak Struk</a>
+                                                                        <?php endif ?>
+                                                                        <a href="logout.php?logout=berhasil" class="btn-sm p-2 btn-secondary"><i class='bx bx-home me-2'></i>Home</a>
                                                                     </td>
                                                                 </tfoot>
                                                                 </tbody>

@@ -17,7 +17,7 @@
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
         <li class="menu-item active">
-            <a href="index.html" class="menu-link">
+            <a href="index.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
@@ -59,28 +59,31 @@
             </ul>
         </li> -->
 
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Admin</span>
-        </li>
-        <li class="menu-item">
-            <a href="../content/level.php" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">Data Level</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="../content/category.php" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">Data Kategori Barang</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="../content/product.php" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Misc">Data Barang</div>
-            </a>
-        </li>
+        <?php if ($_SESSION['level_id'] == 1): ?>
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Admin</span>
+            </li>
+            <li class="menu-item">
+                <a href="../content/level.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                    <div data-i18n="Account Settings">Data Level</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="../content/category.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                    <div data-i18n="Account Settings">Data Kategori Barang</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="../content/product.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-cube-alt"></i>
+                    <div data-i18n="Misc">Data Barang</div>
+                </a>
+            </li>
+        <?php endif ?>
         <!-- Components -->
+
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
         <!-- Cards -->
         <li class="menu-item">
@@ -90,55 +93,55 @@
             </a>
         </li>
         <!-- User interface -->
-        <li class="menu-item">
-            <a href="../content/user.php" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic"> Customer</div>
-            </a>
-        </li>
+        <?php if ($_SESSION['level_id'] == 1) : ?>
+            <li class="menu-item">
+                <a href="../content/user.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-collection"></i>
+                    <div data-i18n="Basic"> Customer</div>
+                </a>
+            </li>
+        <?php else : ?>
+            <li class="menu-item">
+                <a href="../content/user.php?edit=<?php echo $_SESSION['user_id'] ?>" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-collection"></i>
+                    <div data-i18n="Basic"> Profile</div>
+                </a>
+            </li>
+        <?php endif ?>
 
         <!-- Extended components -->
         <li class="menu-item">
             <a href="../content/section-about.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-copy"></i>
-                <div data-i18n="Extended UI">Edit Sugesstion</div>
+                <div data-i18n="Extended UI">According a Guest</div>
             </a>
         </li>
 
         <li class="menu-item">
-            <a href="icons-boxicons.html" class="menu-link">
+            <a href="brand.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-crown"></i>
-                <div data-i18n="Boxicons">Boxicons</div>
+                <div data-i18n="">Brand Pathner</div>
             </a>
         </li>
 
-        <!-- Forms & Tables -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Data &amp; Penjualan</span></li>
-        <!-- Forms -->
-        <li class="menu-item">
-            <a href="product_pay.php" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Elements">customer purchases</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Layouts">Form Layouts</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="form-layouts-vertical.html" class="menu-link">
-                        <div data-i18n="Vertical Form">Vertical Form</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="form-layouts-horizontal.html" class="menu-link">
-                        <div data-i18n="Horizontal Form">Horizontal Form</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        <?php if ($_SESSION['level_id'] == 1) : ?>
+            <!-- Forms & Tables -->
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Data &amp; Penjualan</span></li>
+            <!-- Forms -->
+            <li class="menu-item">
+                <a href="product_pay.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-detail"></i>
+                    <div data-i18n="Form Elements">customer purchases</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="services.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-detail"></i>
+                    <div data-i18n="Form Layouts">Services</div>
+                </a>
+
+            </li>
+        <?php endif ?>
         <!-- Tables -->
         <li class="menu-item">
             <a href="tables-basic.html" class="menu-link">

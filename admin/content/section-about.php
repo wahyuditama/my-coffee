@@ -41,7 +41,7 @@ if (isset($_POST['edit'])) {
         $name_img = $_FILES['foto']['name'];
         $ukuran_file = $_FILES['foto']['size'];
 
-        $ext = array('PNG', 'JPEG', 'jpg');
+        $ext = array('PNG', 'JPEG', 'jpg', 'png', 'jpeg', 'jpg');
         $extpath = pathinfo($name_img, PATHINFO_EXTENSION);
 
         if (!in_array($extpath, $ext)) {
@@ -79,7 +79,6 @@ while ($rowAbout = mysqli_fetch_assoc($queryAbout)) {
 ?>
 
 <!DOCTYPE html>
-?>
 <!DOCTYPE html>
 
 <html
@@ -198,13 +197,17 @@ while ($rowAbout = mysqli_fetch_assoc($queryAbout)) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <a href="?edit=<?php echo $rowAbout['id'] ?>" class="btn-sm btn-success mx-2" width="20">
-                                                            <span class="tf-icon bx bx-pencil bx-18px "></span>
-                                                        </a>
-                                                        <a onclick="return confrim ('sure you want to delete?')" href="?delete=<?php echo $rowAbout['id'] ?>" class="btn-sm btn-danger" width="20">
-                                                            <span class="tf-icon bx bx-trash bx-18px "></span>
-                                                        </a>
+                                                    <div class="card mt-3">
+                                                        <?php if ($_SESSION['level_id'] == 1) : ?>
+                                                            <div class="col-md-4">
+                                                                <a href="?edit=<?php echo $rowAbout['id'] ?>" class="btn-sm btn-success mx-2" width="20">
+                                                                    <span class="tf-icon bx bx-pencil bx-18px "></span>
+                                                                </a>
+                                                                <a onclick="return confrim ('sure you want to delete?')" href="?delete=<?php echo $rowAbout['id'] ?>" class="btn-sm btn-danger" width="20">
+                                                                    <span class="tf-icon bx bx-trash bx-18px "></span>
+                                                                </a>
+                                                            </div>
+                                                        <?php endif ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,7 +256,9 @@ while ($rowAbout = mysqli_fetch_assoc($queryAbout)) {
             class="btn btn-danger btn-buy-now">Welcome to MY-Coffee</a>
     </div>
 
+
     <?php include '../layout/js.php' ?>
+
 </body>
 
 </html>
