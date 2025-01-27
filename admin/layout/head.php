@@ -1,3 +1,11 @@
+<?php
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../auth/login.php?error=session_expired");
+    exit();
+}
+?>
+
 <title>My-Coffee</title>
 
 <meta name="description" content="" />

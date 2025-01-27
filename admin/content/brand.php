@@ -241,18 +241,18 @@ while ($row = mysqli_fetch_assoc($brand)) {
                                         <div class="card icon-card cursor-pointer text-center mb-4 m-3 shadow-sm bg-body-tertiary rounded">
                                             <div class="card-body">
                                                 <i class="bx bxl-adobe mb-2"></i>
-                                                <p class="icon-name text-capitalize text-truncate mb-0"><?php echo $rowBrand['product_name'] ?></p>
+                                                <p class="icon-name text-capitalize text-truncate mb-3"><?php echo $rowBrand['product_name'] ?></p>
                                                 <button type="button" class="btn-sm btn-outline-primary border-top" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $rowBrand['id'] ?>">
                                                     Lihat selengkapnya
                                                 </button>
                                             </div>
                                             <?php if ($_SESSION['user_id'] == 1): ?>
-                                                <div class="card-footer">
-                                                    <a href="brand.php?edit=<?php echo $rowBrand['id'] ?>" class="btn-sm btn-success btn-sm">
+                                                <div class="card-title border-top pt-3">
+                                                    <a href="brand.php?edit=<?php echo $rowBrand['id'] ?>" class="btn-sm btn-success">
                                                         <span class="tf-icon bx bx-pencil bx-18px "></span>
                                                     </a>
                                                     <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
-                                                        href="brand.php?delete=<?php echo $rowBrand['id'] ?>" class="btn-sm btn-danger btn-sm">
+                                                        href="brand.php?delete=<?php echo $rowBrand['id'] ?>" class="btn-sm btn-danger mx-2">
                                                         <span class="tf-icon bx bx-trash bx-18px "></span>
                                                     </a>
                                                 </div>
@@ -296,7 +296,7 @@ while ($row = mysqli_fetch_assoc($brand)) {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel"><?php echo $key['product_name'] ?></h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">

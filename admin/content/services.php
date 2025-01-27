@@ -142,7 +142,10 @@
                          <div class="row">
                              <?php if (isset($_GET['tambah']) || isset($_GET['edit'])) : ?>
                                  <div class="card">
-                                     <div class="card-title"><?php echo isset($_GET['tambah']) ? 'Tambah' : 'Edit' ?> Saran & Masukan</div>
+                                     <div class="card-title border-bottom p-3 d-flex justify-content-between">
+                                         <a class="btn-md "><?php echo isset($_GET['tambah']) ? 'Tambah' : 'Edit' ?> Saran & Masukan</a>
+                                         <a href="?" class="btn-sm btn-secondary ml-3 p-2 rounded">Kembali</a>
+                                     </div>
                                      <div class="card-body">
                                          <form action="" method="post" enctype="multipart/form-data">
                                              <div class="row">
@@ -155,25 +158,25 @@
                                                          value="<?php echo isset($_GET['edit']) ? $rowEdit['title'] : '' ?>"
                                                          required>
                                                      <label for="title" class="form-label mt-3">Masukan Sub-Title </label>
-                                                     <input type="text"
+                                                     <textarea type="text"
                                                          class="form-control"
                                                          id="sub_judul"
                                                          name="sub_judul"
-                                                         value="<?php echo isset($_GET['edit']) ? $rowEdit['sub_title'] : '' ?>">
+                                                         value=""><?php echo isset($_GET['edit']) ? $rowEdit['sub_title'] : '' ?></textarea>
                                                  </div>
                                                  <div class="col-md-6">
                                                      <label for="title" class="form-label mb-3">Masukan Text Artikel Disini</label>
-                                                     <input type="text"
+                                                     <textarea type="text"
                                                          class="form-control"
                                                          id="artikel"
                                                          name="artikel"
-                                                         value="<?php echo isset($_GET['edit']) ? $rowEdit['article'] : '' ?>">
-                                                     <label for="title" class="form-label mb-3">Masukan Text deskripsi Disini</label>
-                                                     <input type="text"
+                                                         value=""><?php echo isset($_GET['edit']) ? $rowEdit['article'] : '' ?></textarea>
+                                                     <label for="title" class="form-label my-3">Masukan Text deskripsi Disini</label>
+                                                     <textarea type="text"
                                                          class="form-control"
                                                          id="deskripsi"
                                                          name="deskripsi"
-                                                         value="<?php echo isset($_GET['edit']) ? $rowEdit['description'] : '' ?>">
+                                                         value=""><?php echo isset($_GET['edit']) ? $rowEdit['description'] : '' ?></textarea>
                                                  </div>
 
                                                  <div class="col-md-6">
@@ -191,34 +194,33 @@
                                      </div>
                                  </div>
                              <?php else : ?>
-                                 <div class="col-sm-12">
-                                     <div class="card">
-                                         <div class="row">
-                                             <div class="card-title" align="right">
-                                                 <a href="?tambah" class="btn-sm btn-primary">tambah</a>
-                                             </div>
-                                             <?php foreach ($resultQuery as $val_services) : ?>
-                                                 <div class="col-md-4">
-                                                     <div class="card" style="height: 12rem;">
-                                                         <div class="card-title px-3 border-bottom">
-                                                             <h5><?php echo $val_services['title'] ?></h5>
+                                 <div class="card p-3">
+                                     <div class="row">
+                                         <div class="card-title border-bottom p-3 shadow-sm bg-socondary d-flex justify-content-between" align="right">
+                                             <a href="">Servicescape :</a>
+                                             <a href="?tambah" class="btn-sm btn-primary">tambah</a>
+                                         </div>
+                                         <?php foreach ($resultQuery as $val_services) : ?>
+                                             <div class="col-md-4">
+                                                 <div class="card" style="height: 12rem;">
+                                                     <div class="card-title px-3 border-bottom">
+                                                         <h5><?php echo $val_services['title'] ?></h5>
+                                                     </div>
+                                                     <div class="card-title px-3 border-bottom"><?php echo $val_services['sub_title'] ?></div>
+                                                     <div class="row mx-2 my-1">
+                                                         <div class="col-md-6">
+                                                             <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $val_services['id'] ?>">
+                                                                 Launch demo modal
+                                                             </button>
                                                          </div>
-                                                         <div class="card-title px-3 border-bottom"><?php echo $val_services['sub_title'] ?></div>
-                                                         <div class="row mx-2 my-1">
-                                                             <div class="col-md-6">
-                                                                 <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $val_services['id'] ?>">
-                                                                     Launch demo modal
-                                                                 </button>
-                                                             </div>
-                                                             <div class="col-md-6 mt-2">
-                                                                 <a href="?edit=<?php echo $val_services['id'] ?>" class="btn-sm btn-success mx-2 p-2"><span class=" bx bx-pencil"></span></a>
-                                                                 <a href="?deleted=<?php echo $val_services['id'] ?>" class="btn-sm btn-danger p-2"><span class=" bx bx-trash"></span></a>
-                                                             </div>
+                                                         <div class="col-md-6 mt-2">
+                                                             <a href="?edit=<?php echo $val_services['id'] ?>" class="btn-sm btn-success mx-2 p-2"><span class=" bx bx-pencil"></span></a>
+                                                             <a href="?deleted=<?php echo $val_services['id'] ?>" class="btn-sm btn-danger p-2"><span class=" bx bx-trash"></span></a>
                                                          </div>
                                                      </div>
                                                  </div>
-                                             <?php endforeach ?>
-                                         </div>
+                                             </div>
+                                         <?php endforeach ?>
                                      </div>
                                  </div>
                              <?php endif ?>
@@ -282,7 +284,7 @@
                      </div>
                      <div class="modal-footer">
                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                         <button type="button" class="btn btn-primary">Save changes</button>
+                         <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                      </div>
                  </div>
              </div>

@@ -251,7 +251,7 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                         <th>Kategori Barang</th>
                                                         <th>Nama Barang</th>
                                                         <th>Harga Barang</th>
-                                                        <th style="width:30rem;">Deskripsi Barang</th>
+                                                        <th style="width:20rem;">Deskripsi Barang</th>
                                                         <th>Aksi</th>
 
                                                     </tr>
@@ -266,14 +266,14 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                             <td><?php echo $rowProduct['price'] ?></td>
                                                             <td><?php echo $rowProduct['description'] ?></td>
                                                             <td>
-                                                                <a href="product.php?edit=<?php echo $rowProduct['id'] ?>&detail=<?php echo $rowProduct['id'] ?>" class="btn btn-primary btn-sm">
+                                                                <a href="product.php?edit=<?php echo $rowProduct['id'] ?>&detail=<?php echo $rowProduct['id'] ?>" class="btn-sm btn-primary btn-sm">
                                                                     <span class="tf-icon bx bx-show bx-18px "></span>
                                                                 </a>
-                                                                <a href="product.php?edit=<?php echo $rowProduct['id'] ?>" class="btn btn-success btn-sm">
+                                                                <a href="product.php?edit=<?php echo $rowProduct['id'] ?>" class="btn-sm btn-success btn-sm mx-2">
                                                                     <span class="tf-icon bx bx-pencil bx-18px "></span>
                                                                 </a>
                                                                 <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
-                                                                    href="product.php?delete=<?php echo $rowProduct['id'] ?>" class="btn btn-danger btn-sm">
+                                                                    href="product.php?delete=<?php echo $rowProduct['id'] ?>" class="btn-sm btn-danger btn-sm">
                                                                     <span class="tf-icon bx bx-trash bx-18px "></span>
                                                                 </a>
                                                             </td>

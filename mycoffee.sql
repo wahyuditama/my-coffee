@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 26, 2025 at 04:27 PM
+-- Generation Time: Jan 27, 2025 at 04:45 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -47,6 +47,29 @@ INSERT INTO `about` (`id`, `username`, `title`, `suggestion`, `foto`, `create_at
 (4, 'Yohana Rahmadi', '', 'Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.', 'testimonials-3.jpg', '2025-01-23 13:43:16', '2025-01-23 13:43:44'),
 (5, 'Ronald Eryawan', '', 'Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.', 'testimonials-5.jpg', '2025-01-23 13:44:13', '2025-01-23 13:44:13'),
 (6, 'Yulia HedroJoyokusumo', '', 'Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.', 'testimonials-2.jpg', '2025-01-23 13:45:01', '2025-01-23 13:45:01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accessories`
+--
+
+CREATE TABLE `accessories` (
+  `id` int(12) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `price` int(100) NOT NULL,
+  `images` varchar(255) NOT NULL,
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `accessories`
+--
+
+INSERT INTO `accessories` (`id`, `title`, `description`, `price`, `images`, `create_at`, `update_at`) VALUES
+(1, 'sed consectetur. lorem', 'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.', 15000, 'apple-touch-icon.png', '2025-01-27 05:09:34', '2025-01-27 06:06:32');
 
 -- --------------------------------------------------------
 
@@ -157,6 +180,31 @@ INSERT INTO `detail_order` (`id`, `id_order`, `id_product`, `qty`, `price`, `pay
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `environment`
+--
+
+CREATE TABLE `environment` (
+  `id` int(12) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `paragraf` varchar(1300) NOT NULL,
+  `menu` text NOT NULL,
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `environment`
+--
+
+INSERT INTO `environment` (`id`, `title`, `paragraf`, `menu`, `create_at`, `update_at`) VALUES
+(1, 'Recycling & Reducing Waste', 'Despite the many challenges, we\'ve been tackling recycling and waste reduction on many fronts. \n\nRecycling in Stores\nWhen looking at the waste generated at a Starbucks store, most of it can be found behind the counter or in the backroom in the form of cardboard boxes, milk jugs, syrup bottles, and coffee grounds. Many of our stores recycle these items, but because it is done behind the counter and in the backroom, it’s not something our customers typically see. What they do see is what happens in the café area. \n\nRecycling success depends on the availability of commercial recycling services where our stores are located. While our policy is that stores recycle where space and services are available, execution often presents challenges, both with customer perception of the services being provided and the actual service itself. Also, different commercial recyclers accept different materials, so we’re not able to provide a consistent program from store to store. And for stores located in shared spaces like malls, it is often the landlord who controls waste collection and recycling. ', 'Recycling', '2025-01-27 08:00:44', '2025-01-27 10:13:26'),
+(2, 'Energy Conservation', 'In the last few years we’ve made significant progress in understanding and developing new strategies to reduce our energy consumption. We continue to invest in renewable energy to offset the electricity used in our company-operated stores in the US and Canada, and are beginning to work with our markets around the world to identify additional renewable solutions. We’re also investing in new lighting and improving the efficiency of HVAC (heating, ventilation and cooling) systems and other equipment. \r\n\r\nThe next couple of years will be spent testing, refining, planning and pushing so that we’re fully prepared to meet our 2015 commitment. We’re optimistic about our future and will keep you informed on our progress.', 'Energy', '2025-01-27 08:06:47', '2025-01-27 13:02:09'),
+(3, 'Environmental Stewardship', 'We share our customers\' commitment to the environment\r\nAnd we believe in the importance of caring for our planet and working with and encouraging others to do the same. As a company that relies on an agricultural product, it makes good business sense. And', 'Responsibility', '2025-01-27 09:02:09', '2025-01-27 09:02:09'),
+(6, 'Water Conservation', 'We’ve made great strides in reducing water consumption in our stores, such as removing all “dipper wells” – those small bowls with continuous streams of water that cleaned spoons used for pouring milk into espresso drinks – and replacing them with manual faucets, which consume 15% less water. \r\n\r\nIn many markets, we use a blast of higher-pressure water to clean blender jugs instead of an open tap. We’ve also programmed our espresso machines to dispense less water when rinsing espresso shot glasses. And we train our partners (employees) to keep the refrigeration coils on ice machines clean to reduce the amount of latent heat from the machines and minimize ice melt. ', 'Water', '2025-01-27 13:03:43', '2025-01-27 13:03:43');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `level`
 --
 
@@ -226,7 +274,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `id_category`, `product_name`, `description`, `price`, `image`, `stock`, `created_at`, `update_at`) VALUES
-(1, 1, 'Coffee Espresso', 'lorem ipsum dolor site amet                                                                         ', 20000.00, 'img3.jpg', 12, '2025-01-11 08:09:52', '2025-01-18 10:54:06'),
+(1, 1, 'Coffee Espresso', '', 20000.00, 'img3.jpg', 12, '2025-01-11 08:09:52', '2025-01-27 12:17:10'),
 (2, 2, 'Americano', '                                                                                                    ', 11000.00, 'img2.jpg', 12, '2025-01-11 08:27:27', '2025-01-11 09:40:01'),
 (3, 3, 'coffee ice vanila', '                                                        ', 15000.00, 'img2.jpg', 15, '2025-01-11 08:28:28', '2025-01-11 08:28:28'),
 (4, 1, 'coffee hot caramell', '                                                        ', 16000.00, 'img3.jpg', 13, '2025-01-11 08:29:10', '2025-01-11 08:29:10'),
@@ -284,7 +332,7 @@ INSERT INTO `user` (`id`, `id_level`, `username`, `phone`, `address`, `email`, `
 (2, 2, 'Jasen Yurhadi', '03947488', 'Jakarta', 'jasen@gmail.com', '123', '2025-01-17 15:24:12', '2025-01-18 12:05:29'),
 (3, 2, 'Doni Iryawan', '03947488', 'Tangerang', '', '', '2025-01-18 11:16:58', '2025-01-21 15:50:53'),
 (4, 2, 'Yohana Rahmadi', '03947488', 'Bandung', 'Yohana@gmail.com', '', '2025-01-21 17:01:04', '2025-01-21 17:01:35'),
-(5, 2, 'Anton Martius', '03947488', 'Tuban', 'anton@gmail.com', '1234', '2025-01-22 03:46:12', '2025-01-22 04:48:33');
+(5, 2, 'Anton Martius', '03947488', 'Madura', 'anton@gmail.com', '1234', '2025-01-22 03:46:12', '2025-01-27 13:18:32');
 
 --
 -- Indexes for dumped tables
@@ -294,6 +342,12 @@ INSERT INTO `user` (`id`, `id_level`, `username`, `phone`, `address`, `email`, `
 -- Indexes for table `about`
 --
 ALTER TABLE `about`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `accessories`
+--
+ALTER TABLE `accessories`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -321,6 +375,12 @@ ALTER TABLE `detail_order`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_order` (`id_order`),
   ADD KEY `id_product` (`id_product`);
+
+--
+-- Indexes for table `environment`
+--
+ALTER TABLE `environment`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `level`
@@ -366,6 +426,12 @@ ALTER TABLE `about`
   MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `accessories`
+--
+ALTER TABLE `accessories`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `brand`
 --
 ALTER TABLE `brand`
@@ -388,6 +454,12 @@ ALTER TABLE `contact`
 --
 ALTER TABLE `detail_order`
   MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
+
+--
+-- AUTO_INCREMENT for table `environment`
+--
+ALTER TABLE `environment`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `level`

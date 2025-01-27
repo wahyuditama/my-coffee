@@ -178,7 +178,7 @@ while ($rowAbout = mysqli_fetch_assoc($queryAbout)) {
                                                 <div class="card shadow p-3 mb-5 bg-body-tertiary rounded" height="40">
                                                     <div class="row">
                                                         <div class="col-md-4 text-center">
-                                                            <img src="../upload/<?php echo $rowAbout['foto'] ?>" width="100" height="auto" alt="">
+                                                            <img src="../upload/<?php echo $rowAbout['foto'] ?>" class="card shadow-lg bg-body-tertiary" width="100" height="auto" alt="">
                                                         </div>
                                                         <div class="col-md-8">
                                                             <h5><?php echo $rowAbout['username'] ?></h5>
@@ -199,7 +199,7 @@ while ($rowAbout = mysqli_fetch_assoc($queryAbout)) {
                                                     </div>
                                                     <div class="card mt-3">
                                                         <?php if ($_SESSION['level_id'] == 1) : ?>
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-12 border-top pt-3" align="right">
                                                                 <a href="?edit=<?php echo $rowAbout['id'] ?>" class="btn-sm btn-success mx-2" width="20">
                                                                     <span class="tf-icon bx bx-pencil bx-18px "></span>
                                                                 </a>

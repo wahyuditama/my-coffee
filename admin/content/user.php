@@ -16,7 +16,9 @@ if (isset($_POST['tambah'])) {
 // die();
 //edit data user
 $id = isset($_GET['edit']) ? $_GET['edit'] : '';
-$editData = mysqli_query($koneksi, "SELECT * FROM user WHERE id='$id'");
+$editData = mysqli_query($koneksi, "SELECT level.level_name, user.* FROM user LEFT JOIN level ON user.id_level = level.id
+WHERE user.id ='$id'");
+
 $rowEdit = mysqli_fetch_assoc($editData);
 
 if (isset($_POST['edit'])) {
@@ -26,7 +28,12 @@ if (isset($_POST['edit'])) {
     $email  = $_POST['email'];
     $idLevel = $_POST['level'];
     $update = mysqli_query($koneksi, "UPDATE user SET id_level='$idLevel', username='$username', phone='$phone', address='$alamat', email='$email' WHERE id='$id'");
-    header("location:user.php?ubah=berhasil");
+
+    if ($_SESSION['user_id'] == 1) {
+        header(header: "location:user.php?ubah=berhasil");
+    } else {
+        header("location: user.php?edit=$id");
+    }
 }
 
 //Delet Data user
@@ -131,16 +138,19 @@ $level = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
                                                 </div>
                                                 <div class="col-md-6 mb-3">
                                                     <label for="" class="mb-1">Pilih Level</label>
-                                                    <select name="level" id="" class="form-control">
-                                                        <?php
-                                                        while ($rowLevel = mysqli_fetch_assoc($level)) { ?>
-                                                            <option value="<?php echo $rowLevel['id'] ?>" <?php echo isset($_GET['edit']) && $rowEdit['id_level'] == $rowLevel['id'] ? 'selected' : '' ?>>
-                                                                <?php echo $rowLevel['level_name'] ?>
-                                                            </option>
-                                                        <?php } ?>
-                                                    </select>
+                                                    <?php if ($_SESSION['user_id'] == 1): ?>
+                                                        <select name="level" id="" class="form-control" <?php ($_SESSION['user_id'] == 2) ? 'disabled' : '' ?>>
+                                                            <?php
+                                                            while ($rowLevel = mysqli_fetch_assoc($level)) { ?>
+                                                                <option value="<?php echo $rowLevel['id'] ?>" <?php echo isset($_GET['edit']) && $rowEdit['id_level'] == $rowLevel['id'] ? 'selected' : '' ?>>
+                                                                    <?php echo $rowLevel['level_name'] ?>
+                                                                </option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    <?php else : ?>
+                                                        <input type="text" name="" value="<?php echo isset($_GET['edit']) ? $rowEdit['level_name'] : '' ?>" class="form-control" readonly>
+                                                    <?php endif ?>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 mb-3">

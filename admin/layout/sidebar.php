@@ -1,10 +1,10 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="index.php" class="d-inline">
-            <span class="app-brand-text demo menu-text fw-bolder ms-2 text-wrap fs-4" style="font-family:Playwrite AU SA, serif;">MY-Coffee</span>
-            <!-- <span class="app-brand-logo demo">
-                <img src="../assets/img/backgrounds/side-logo-coffee.png" width="80" height="auto" alt="">
-            </span> -->
+        <a href="index.php" class="d-flex">
+            <span class="app-brand-logo demo">
+                <img src="../assets/img/backgrounds/side-logo-coffee.png" width="60" height="auto" alt="">
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2 text-wrap fs-4 mt-3" style="font-family:Playwrite AU SA, serif;">MY-Coffee</span>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -144,25 +144,25 @@
         <?php endif ?>
         <!-- Tables -->
         <li class="menu-item">
-            <a href="tables-basic.html" class="menu-link">
+            <a href="aksesoris.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-table"></i>
-                <div data-i18n="Tables">Tables</div>
+                <div data-i18n="Tables">accessories</div>
             </a>
         </li>
         <!-- Misc -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
         <li class="menu-item">
             <a
-                href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-                target="_blank"
+                href="environment.php"
+                target=""
                 class="menu-link">
                 <i class="menu-icon tf-icons bx bx-support"></i>
-                <div data-i18n="Support">Support</div>
+                <div data-i18n="Support">Environment</div>
             </a>
         </li>
         <li class="menu-item">
             <a
-                href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                href="https://getbootstrap.com/"
                 target="_blank"
                 class="menu-link">
                 <i class="menu-icon tf-icons bx bx-file"></i>
