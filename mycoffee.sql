@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 30, 2025 at 06:00 PM
+-- Generation Time: Jan 30, 2025 at 07:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -321,11 +321,11 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `id_level`, `username`, `phone`, `address`, `email`, `password`, `create_at`, `update_at`) VALUES
 (1, 1, 'admin', '84895395', 'Cirebon', 'admin@gmail.com', '123', '2025-01-17 14:51:31', '2025-01-17 15:25:06'),
 (2, 2, 'Jasen Yurhadi', '03947488', 'Jakarta', 'jasen@gmail.com', '123', '2025-01-17 15:24:12', '2025-01-18 12:05:29'),
-(3, 2, 'Doni Iryawan', '03947488', 'Tangerang', '', '', '2025-01-18 11:16:58', '2025-01-21 15:50:53'),
-(4, 2, 'Yohana Rahmadi', '03947488', 'Bandung', 'Yohana@gmail.com', '', '2025-01-21 17:01:04', '2025-01-21 17:01:35'),
+(3, 2, 'Doni Iryawan', '03947488', 'Tangerang', 'donia2gmail.com', '123', '2025-01-18 11:16:58', '2025-01-30 18:04:31'),
+(4, 2, 'Yohana Rahmadi', '03947488', 'Bandung', 'Yohana@gmail.com', '123', '2025-01-21 17:01:04', '2025-01-30 18:04:36'),
 (5, 2, 'Anton Martius', '03947488', 'Pasuruan', 'anton@gmail.com', '1234', '2025-01-22 03:46:12', '2025-01-28 11:10:34'),
 (19, 2, 'Johan Septian Purwadi', '03947488', 'Pasuruan', 'Johan@gmail.com', '123', '2025-01-28 18:13:54', '2025-01-28 18:13:54'),
-(20, 2, 'Ari Era', '082111760568', 'Eraari02@yahoo.co.id', 'Eraari02@yahoo.co.id', 'al666666', '2025-01-30 14:24:23', '2025-01-30 14:24:23');
+(20, 2, 'Ari Era', '08643437349', 'Sukabumi', 'era@gmail.com', '1234', '2025-01-30 14:24:23', '2025-01-30 18:04:13');
 
 --
 -- Indexes for dumped tables
