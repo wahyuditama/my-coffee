@@ -236,7 +236,7 @@ while ($row = mysqli_fetch_assoc($query)) {
     </div>
 
     <script>
-        // Fungsi untuk menampilkan konten yang dipilih
+        // untuk menampilkan konten yang dipilih
         function showContent(menuId) {
             // Sembunyikan semua konten
             const allContent = document.getElementsByClassName('content-section');
@@ -251,7 +251,6 @@ while ($row = mysqli_fetch_assoc($query)) {
             }
         }
 
-        // Tampilkan konten pertama saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
             const firstMenu = document.querySelector('.content-section');
             if (firstMenu) {
