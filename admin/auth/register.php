@@ -42,12 +42,12 @@ if (isset($_POST['register'])) {
         name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Register Basic - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>My-Coffee</title>
 
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="../assets/img/backgrounds/side-logo-coffee.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -168,7 +168,7 @@ if (isset($_POST['register'])) {
 
                         <p class="text-center">
                             <span>Already have an account?</span>
-                            <a href="auth-login-basic.html">
+                            <a href="login.php">
                                 <span>Sign in instead</span>
                             </a>
                         </p>

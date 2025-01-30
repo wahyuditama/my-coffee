@@ -190,7 +190,7 @@ while ($rowAbout = mysqli_fetch_assoc($queryAbout)) {
                                                             </p>
                                                             <div style="">
                                                                 <div class="collapse collapse-horizontal" id="collapseWidthExample<?php echo $rowAbout['id'] ?>">
-                                                                    <div class="card card-body text-justify">
+                                                                    <div class="card card-body" style="text-align: justify;">
                                                                         <?php echo $rowAbout['suggestion'] ?>
                                                                     </div>
                                                                 </div>

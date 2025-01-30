@@ -1,9 +1,6 @@
 <?php
 
-include '../../admin/database/koneksi.php';
-
-$querySuggest = mysqli_query($koneksi, "SELECT * FROM about ORDER BY id DESC");
-
+include '../inc/query.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +34,7 @@ $querySuggest = mysqli_query($koneksi, "SELECT * FROM about ORDER BY id DESC");
             <nav class="breadcrumbs">
                 <div class="container">
                     <ol>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="../../index.php">Home</a></li>
                         <li class="current">About</li>
                     </ol>
                 </div>
@@ -85,25 +82,25 @@ $querySuggest = mysqli_query($koneksi, "SELECT * FROM about ORDER BY id DESC");
                     <div class="swiper-wrapper">
 
                         <?php
-                        while ($rowSuggest = mysqli_fetch_assoc($querySuggest)) { ?>
+                        foreach ($rowSuggest as $value) : ?>
                             <div class="swiper-slide">
                                 <div class="testimonial-item">
                                     <div class="stars">
                                         <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                                     </div>
                                     <p>
-                                        <?php echo $rowSuggest['suggestion'] ?>
+                                        <?php echo $value['suggestion'] ?>
                                     </p>
                                     <div class="profile mt-auto">
-                                        <img src="../../admin/upload/<?php echo $rowSuggest['foto'] ?>" class="testimonial-img" alt="">
-                                        <h3><?php echo $rowSuggest['username'] ?></h3>
-                                        <h4><?php echo $rowSuggest['title'] ?></h4>
+                                        <img src="../../admin/upload/<?php echo $value['foto'] ?>" class="testimonial-img" alt="">
+                                        <h3><?php echo $value['username'] ?></h3>
+                                        <h4><?php echo $value['title'] ?></h4>
                                     </div>
                                 </div>
 
                                 <div class="swiper-pagination"></div>
                             </div>
-                        <?php } ?>
+                        <?php endforeach ?>
 
                     </div>
 

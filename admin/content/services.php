@@ -9,6 +9,7 @@
         $artikel = $_POST['artikel'];
         $desk = $_POST['deskripsi'];
 
+        // Cek apakah ada gambar yang diupload
         if (!empty($_FILES['gambar']['name'])) {
             $name_img = $_FILES['gambar']['name'];
             $ukuran_file = $_FILES['gambar']['size'];
@@ -17,18 +18,29 @@
             $extpath = pathinfo($name_img, PATHINFO_EXTENSION);
 
             if (!in_array(strtoupper($extpath), $ext)) {
-                echo "Format file gambar yang diperbolehkan hanya PNG, JPEG, atau JPG.";
+                echo "Format gambar yang diperbolehkan hanya PNG, JPEG, atau JPG.";
                 die();
             } else {
-                move_uploaded_file($_FILES['gambar']['tmp_name'], to: '../upload/' . $name_img);
-                $insertSer = mysqli_query($koneksi, "INSERT INTO services (title,sub_title,article,description,images) VALUES ('$title','$sub_judul','$artikel','$desk','$name_img')");
+                move_uploaded_file($_FILES['gambar']['tmp_name'], '../upload/' . $name_img);
+
+                // Query dengan gambar
+                $insertSer = $koneksi->prepare("INSERT INTO services (title, sub_title, article, description, images) VALUES (?, ?, ?, ?, ?)");
+                $insertSer->bind_param("sssss", $title, $sub_judul, $artikel, $desk, $name_img);
             }
         } else {
-            $insertSer = mysqli_query($koneksi, "INSERT INTO services (title,sub_title,article,description) VALUES('$title','$sub_judul','$artikel','$desk')");
+            // Query tanpa gambar
+            $insertSer = $koneksi->prepare("INSERT INTO services (title, sub_title, article, description) VALUES (?, ?, ?, ?)");
+            $insertSer->bind_param("ssss", $title, $sub_judul, $artikel, $desk);
         }
 
-        header("location:services.php?input=berhasil");
+        if ($insertSer->execute()) {
+            header("location:services.php?input=berhasil");
+            exit();
+        }
+
+        $insertSer->close();
     }
+
 
     //Edit Data Suggestion
     $id = isset($_GET['edit']) ? $_GET['edit'] : '';
@@ -54,27 +66,24 @@
             } else {
                 unlink(filename: '../upload/' . $rowEdit['gambar']);
                 move_uploaded_file($_FILES['gambar']['tmp_name'], to: '../upload/' . $name_img);
-
-                $updateData = mysqli_query($koneksi, "UPDATE services SET 
-            title='$title',
-            sub_title='$sub_judul',
-            article = '$artikel',
-            description='$desk',
-            images='$name_img'
-            WHERE id='$id'");
+                // Query Update dengan gambar
+                $updateData = $koneksi->prepare("UPDATE services SET title=?, sub_title=?, article=?, description=?, images=? WHERE id=?");
+                $updateData->bind_param("sssssi", $title, $sub_judul, $artikel, $desk, $name_img, $id);
             }
         } else {
-            $updateData = mysqli_query($koneksi, "UPDATE services SET 
-            title='$title',
-            sub_title='$sub_judul',
-            article = '$artikel',
-            description='$desk'
-             WHERE id='$id'");
+            // Query Update tanpa gambar
+            $updateData = $koneksi->prepare("UPDATE services SET title=?, sub_title=?, article=?, description=? WHERE id=?");
+            $updateData->bind_param("ssssi", $title, $sub_judul, $artikel, $desk, $id);
         }
-        // print_r($updateData);
-        // die();
-        header("location: services.php?replace=success");
+
+        if ($updateData->execute()) {
+            header("location:services.php?update=berhasil");
+            exit();
+        }
+
+        $updateData->close();
     }
+
 
     //Delete Data
     if (isset($_GET['deleted'])) {
@@ -201,12 +210,12 @@
                                              <a href="?tambah" class="btn-sm btn-primary">tambah</a>
                                          </div>
                                          <?php foreach ($resultQuery as $val_services) : ?>
-                                             <div class="col-md-4">
+                                             <div class="col-md-4 mb-5">
                                                  <div class="card" style="height: 12rem;">
-                                                     <div class="card-title px-3 border-bottom">
+                                                     <div class="card-title px-3 pt-2 border-bottom">
                                                          <h5><?php echo $val_services['title'] ?></h5>
                                                      </div>
-                                                     <div class="card-title px-3 border-bottom"><?php echo $val_services['sub_title'] ?></div>
+                                                     <div class="card-title px-3 border-bottom" style="text-align: justify;"><?php echo $val_services['sub_title'] ?></div>
                                                      <div class="row mx-2 my-1">
                                                          <div class="col-md-6">
                                                              <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $val_services['id'] ?>">
@@ -269,7 +278,7 @@
              <div class="modal-dialog">
                  <div class="modal-content">
                      <div class="modal-header">
-                         <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                         <h5><?php echo $val_services['title'] ?></h5>
                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                      </div>
                      <div class="modal-body">
@@ -277,7 +286,7 @@
                              <div class="col-md-4">
                                  <img src="../upload/<?php echo $val['images'] ?>" width="100" alt="">
                              </div>
-                             <div class="col-md-8" class="text-justify">
+                             <div class="col-md-8 border-bottom" style="text-align: justify;">
                                  <p><?php echo $val['article'] ?></p>
                              </div>
                          </div>

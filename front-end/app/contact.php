@@ -47,7 +47,7 @@ if (isset($_GET['input'])) {
             <nav class="breadcrumbs">
                 <div class="container">
                     <ol>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="../../index.php">Home</a></li>
                         <li class="current">Contact</li>
                     </ol>
                 </div>

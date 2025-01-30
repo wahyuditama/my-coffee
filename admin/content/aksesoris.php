@@ -180,19 +180,19 @@ while ($rowaccessories = mysqli_fetch_assoc($queryaccessories)) {
                                 </div>
                             <?php else : ?>
                                 <div class="col-sm-12">
-                                    <div class="card">
+                                    <div class="card p-4">
                                         <div class="row">
                                             <div class="card-title" align="right">
                                                 <a href="?tambah" class="btn-sm btn-primary">tambah</a>
                                             </div>
                                             <?php foreach ($resultQuery as $val_accessories) : ?>
                                                 <div class="col-md-2 text-center">
-                                                    <div class="card p-3" style="height: 14rem;">
+                                                    <div class="card p-3 border shadow-sm bg-body-tertiary rounded" style="height: 14rem;">
                                                         <img src="../upload/<?php echo $val_accessories['images'] ?>" class="mx-3" width="100" alt="">
                                                         <div class="card-tile border-top my-2">
                                                             <p><?php echo $val_accessories['title'] ?></p>
                                                             <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $val_accessories['id'] ?>">
-                                                                Launch demo modal
+                                                                Lihat Detail
                                                             </button>
                                                         </div>
                                                     </div>
@@ -253,19 +253,21 @@ while ($rowaccessories = mysqli_fetch_assoc($queryaccessories)) {
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-4">
-                                <img src="../upload/<?php echo $data['images'] ?>" width="100" alt="">
+                                <img src="../upload/<?php echo $data['images'] ?>" width="100" class="shadow bg-body-tertiary rounded " alt="">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-text">
-                                    <p class="border-bottom text-justify"><?php echo $data['description'] ?></p>
+                                    <p class="border-bottom pb-2" style="text-align:justify;"><?php echo $data['description'] ?></p>
                                     <p>harga : <?php echo $data['price'] ?></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="?edit=<?php echo $data['id'] ?>" class="btn btn-success mx-2 p-2"><span class=" bx bx-pencil"></span>Edit</a>
-                        <a href="?deleted=<?php echo $data['id'] ?>" class="btn btn-danger p-2"><span class=" bx bx-trash"></span>Delete</a>
+                        <?php if ($_SESSION['level_id'] == 1): ?>
+                            <a href="?edit=<?php echo $data['id'] ?>" class="btn btn-success mx-2 p-2"><span class=" bx bx-pencil"></span>Edit</a>
+                            <a href="?deleted=<?php echo $data['id'] ?>" class="btn btn-danger p-2"><span class=" bx bx-trash"></span>Delete</a>
+                        <?php endif ?>
                         <!-- <button <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary">Save changes</button>  -->
                     </div>

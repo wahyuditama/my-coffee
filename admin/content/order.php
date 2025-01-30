@@ -1,6 +1,6 @@
 <?php
 include '../database/koneksi.php';
-// include '../layout/helper.php';
+include '../layout/helper.php';
 session_start();
 
 $queryOrder = mysqli_query($koneksi, "SELECT * FROM product");
@@ -9,8 +9,9 @@ while ($rowOrders = mysqli_fetch_array($queryOrder)) {
     $resultOrders[] = $rowOrders;
 }
 
-$queryInvoice = mysqli_query($koneksi, "SELECT MAX(id) AS order_code FROM `order`");
+$queryInvoice = mysqli_query($koneksi, "SELECT MAX(id) AS order_code FROM `orders`");
 $no_unique = "INV";
+$data = 1;
 $data_now = date("dmY");
 
 if ($queryInvoice && mysqli_num_rows($queryInvoice) > 0) {
@@ -18,7 +19,7 @@ if ($queryInvoice && mysqli_num_rows($queryInvoice) > 0) {
     $incrementPlus = (int)$rowInvoice['order_code'] + 1;
     $codeInput = $no_unique . "/" . $data_now . "/" . str_pad($incrementPlus, 3, "0", STR_PAD_LEFT);
 } else {
-    $codeInput = $no_unique . "/" . $data_now . "/001";
+    $codeInput = $no_unique . "/" . $data_now . $data++;
 }
 if (isset($_POST['simpan'])) {
     $user = $_POST['id_user'];
@@ -29,28 +30,28 @@ if (isset($_POST['simpan'])) {
     $pay = $_POST['payment'];
     $return = $_POST['change'];
 
-    //Insert ke tabel orders
     $insertOrder = mysqli_query($koneksi, "INSERT INTO orders (id_user, order_code, order_date, total_price) VALUES ('$user', '$inv', '$date', '$price')");
 
     //ambil data ID saat $insertOrder di klik
     if ($insertOrder) {
         $id_order = mysqli_insert_id($koneksi);
 
-        // Cek name='id_product' akan mengirim data dalam bentuk looping
         if (isset($_POST['id_product'])) {
             foreach ($_POST['id_product'] as $product) {
-                //Insert ke tabel detail_order 
+
                 $insertDetail = mysqli_query($koneksi, "INSERT INTO detail_order (id_order, id_product, qty, price, payment, refund) VALUES ('$id_order', '$product', '$qty', '$price', '$pay', '$return')");
             }
         }
     }
-
+    // unset($_SESSION['orders_id']);
     header("Location: product_pay.php?detail=" . $id_order . "&id=" . $user);
     exit();
 }
+
+
 // var_dump($_SESSION['idOrder']);
 
-// print_r($result);
+// print_r($resultDetail);
 // die();
 
 ?>
@@ -109,8 +110,12 @@ if (isset($_POST['simpan'])) {
                             <div class="row">
                                 <div class="card p-3">
                                     <div class="row">
-                                        <?php if (!empty($_SESSION['orders_id'])) :  ?>
-                                            <a href="product_pay.php?detail=<?php echo $_SESSION['orders_id'] ?>&id=<?php echo $_SESSION['user_id'] ?>" class="btn-sm btn-danger">Pembelian Anda</a>
+                                        <?php if ($_SESSION['Status'] == 1) : ?>
+
+                                        <?php else : ?>
+                                            <?php if (!empty($_SESSION['orders_id'])) :  ?>
+                                                <a href="product_pay.php?detail=<?php echo $_SESSION['orders_id'] ?>&id=<?php echo $_SESSION['user_id'] ?>" class="btn-sm btn-danger">Pembelian Anda</a>
+                                            <?php endif ?>
                                         <?php endif ?>
                                         <div class="col-sm-6">
                                             <div class="card">
@@ -140,7 +145,7 @@ if (isset($_POST['simpan'])) {
                                                                 class="form-control"
                                                                 name="date"
                                                                 placeholder="Masukkan tanggal"
-                                                                value="">
+                                                                value="" required>
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
@@ -169,7 +174,7 @@ if (isset($_POST['simpan'])) {
                                                     <div class="mb-2 row">
                                                         <label class="col-sm-2 col-form-label">Tambah Product</label>
                                                         <div class="col-sm-10">
-                                                            <select id="product-select" class="form-select">
+                                                            <select id="product-select" class="form-select" required>
                                                                 <option value="" data-price="0">Pilih Product</option>
                                                                 <?php foreach ($resultOrders as $value) { ?>
                                                                     <option value="<?php echo $value['id'] ?>" data-price="<?php echo $value['price'] ?>" data-id="<?php echo $value['id'] ?>">
@@ -182,11 +187,11 @@ if (isset($_POST['simpan'])) {
                                                     <div class="mb-2 row">
                                                         <label class="col-sm-2 col-form-label">Qty</label>
                                                         <div class="col-sm-10">
-                                                            <input type="number" name="qty" id="product-qty" class="form-control" value="">
+                                                            <input type="number" name="qty" id="product-qty" class="form-control" value="" required>
                                                             <!-- <input type="hidden" name="qty" id="total-qty"> -->
                                                         </div>
                                                     </div>
-                                                    <button type="button" id="add-order" name="simpan" class="btn-sm btn-primary">Tambah</button>
+                                                    <button type="button" id="add-order" name="simpan" class="btn-sm btn-primary" required>Tambah</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -219,7 +224,7 @@ if (isset($_POST['simpan'])) {
                                                     <label class="form-label">Jumlah Pembayaran</label>
                                                 </td>
                                                 <td>
-                                                    <input type="number" id="payment-input" name="payment" class="form-control" placeholder="Masukkan jumlah pembayaran">
+                                                    <input type="number" id="payment-input" name="payment" class="form-control" placeholder="Masukkan jumlah pembayaran" required>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -233,12 +238,13 @@ if (isset($_POST['simpan'])) {
                                             </tr>
                                             <tr>
                                                 <td colspan="4">
-                                                    <?php if (isset($_GET['pay'])) : ?>
 
+                                                    <button type="button" id="calculate-change" class="btn-sm btn-success">Hitung Kembalian</button>
+                                                    <?php if (isset($_SESSION['Status']) && $_SESSION['Status'] == 0) : ?>
+                                                        <button type="button" class="btn-sm btn-warning" onclick="return confirm ('Pesanan Anda Masih Di Proses')" name="">Simpan Transaksi</button>
                                                     <?php else : ?>
-                                                        <button type="button" id="calculate-change" class="btn-sm btn-success">Hitung Kembalian</button>
                                                         <button type="submit" class="btn-sm btn-warning" name="simpan">Simpan Transaksi</button>
-                                                    <?php endif ?>
+                                                    <?php endif; ?>
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -286,7 +292,6 @@ if (isset($_POST['simpan'])) {
             const productPrice = parseFloat(productSelect.options[productSelect.selectedIndex].dataset.price);
             const qty = parseInt(document.getElementById('product-qty').value);
             const idProduct = parseFloat(productSelect.options[productSelect.selectedIndex].dataset.id);
-            // document.getElementById('product-id').value = idProduct;
 
             // Validasi input
             if (!productSelect.value || qty <= 0) {

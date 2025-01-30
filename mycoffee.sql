@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2025 at 04:45 PM
+-- Generation Time: Jan 30, 2025 at 06:00 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -165,17 +165,7 @@ CREATE TABLE `detail_order` (
 --
 
 INSERT INTO `detail_order` (`id`, `id_order`, `id_product`, `qty`, `price`, `payment`, `refund`, `create_at`, `update_at`) VALUES
-(107, 133, 3, 1, 15000.00, 20000.00, 5000.00, '2025-01-18 13:23:53', '2025-01-18 13:23:53'),
-(108, 134, 5, 1, 63000.00, 65000.00, 2000.00, '2025-01-21 15:36:20', '2025-01-21 15:36:20'),
-(109, 134, 4, 1, 63000.00, 65000.00, 2000.00, '2025-01-21 15:36:20', '2025-01-21 15:36:20'),
-(110, 134, 3, 1, 63000.00, 65000.00, 2000.00, '2025-01-21 15:36:20', '2025-01-21 15:36:20'),
-(130, 153, 2, 2, 43000.00, 50000.00, 7000.00, '2025-01-21 16:59:53', '2025-01-21 16:59:53'),
-(131, 153, 5, 2, 43000.00, 50000.00, 7000.00, '2025-01-21 16:59:53', '2025-01-21 16:59:53'),
-(132, 154, 3, 1, 31000.00, 35000.00, 4000.00, '2025-01-22 04:27:54', '2025-01-22 04:27:54'),
-(133, 154, 5, 1, 31000.00, 35000.00, 4000.00, '2025-01-22 04:27:54', '2025-01-22 04:27:54'),
-(136, 156, 4, 1, 52000.00, 55000.00, 3000.00, '2025-01-22 04:51:41', '2025-01-22 04:51:41'),
-(137, 156, 4, 1, 52000.00, 55000.00, 3000.00, '2025-01-22 04:51:41', '2025-01-22 04:51:41'),
-(138, 156, 1, 1, 52000.00, 55000.00, 3000.00, '2025-01-22 04:51:41', '2025-01-22 04:51:41');
+(146, 201, 6, 2, 42000.00, 50000.00, 8000.00, '2025-01-30 14:34:46', '2025-01-30 14:34:46');
 
 -- --------------------------------------------------------
 
@@ -234,7 +224,7 @@ CREATE TABLE `orders` (
   `id_user` int(12) NOT NULL,
   `order_code` varchar(100) NOT NULL,
   `order_date` varchar(100) NOT NULL,
-  `status` tinyint(2) NOT NULL,
+  `status` int(2) NOT NULL,
   `total_price` decimal(10,2) NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -245,11 +235,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `id_user`, `order_code`, `order_date`, `status`, `total_price`, `create_at`, `update_at`) VALUES
-(133, 2, 'INV/18012025/001', '2025-01-10', 0, 15000.00, '2025-01-18 13:23:53', '2025-01-21 15:17:19'),
-(134, 3, 'INV/21012025/001', '2025-01-12', 1, 63000.00, '2025-01-21 15:36:20', '2025-01-21 15:51:05'),
-(153, 4, 'INV/21012025/001', '2025-01-21', 0, 43000.00, '2025-01-21 16:59:53', '2025-01-21 17:01:57'),
-(154, 2, 'INV/22012025/001', '2025-01-22', 1, 31000.00, '2025-01-22 04:27:54', '2025-01-23 06:56:50'),
-(156, 5, 'INV/22012025/001', '', 0, 52000.00, '2025-01-22 04:51:41', '2025-01-22 04:51:41');
+(201, 20, 'INV/30012025/201', '2025-01-30', 1, 42000.00, '2025-01-30 14:34:46', '2025-01-30 15:06:50');
 
 -- --------------------------------------------------------
 
@@ -274,11 +260,14 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `id_category`, `product_name`, `description`, `price`, `image`, `stock`, `created_at`, `update_at`) VALUES
-(1, 1, 'Coffee Espresso', '', 20000.00, 'img3.jpg', 12, '2025-01-11 08:09:52', '2025-01-27 12:17:10'),
-(2, 2, 'Americano', '                                                                                                    ', 11000.00, 'img2.jpg', 12, '2025-01-11 08:27:27', '2025-01-11 09:40:01'),
-(3, 3, 'coffee ice vanila', '                                                        ', 15000.00, 'img2.jpg', 15, '2025-01-11 08:28:28', '2025-01-11 08:28:28'),
-(4, 1, 'coffee hot caramell', '                                                        ', 16000.00, 'img3.jpg', 13, '2025-01-11 08:29:10', '2025-01-11 08:29:10'),
-(5, 2, 'Milk  Hot/ice chocolate ', '                                                        ', 16000.00, 'img5.jpg', 14, '2025-01-11 09:07:20', '2025-01-11 09:07:20');
+(6, 3, 'Latte ', 'Espresso with more steamed milk and less foam.', 21000.00, 'img.1.jpg', 15, '2025-01-30 05:45:49', '2025-01-30 13:59:41'),
+(7, 1, 'Mocha ', 'A combination of espresso, chocolate, steamed milk and whipped cream.', 23000.00, 'img2.jpg', 20, '2025-01-30 05:47:18', '2025-01-30 14:01:10'),
+(8, 2, 'low sugar coffee', 'Similar to a latte, but with less of an espresso and a smoother milk texture.', 17000.00, 'img3.jpg', 15, '2025-01-30 05:50:37', '2025-01-30 14:01:27'),
+(10, 1, 'Espresso ', 'Strong black coffee with fast extraction using an espresso machine.', 23000.00, 'im4.jpg', 15, '2025-01-30 06:33:13', '2025-01-30 14:01:51'),
+(11, 1, 'Americano ', 'Espresso with hot water added produces lighter coffee.', 15000.00, 'img5.jpg', 12, '2025-01-30 06:48:43', '2025-01-30 14:02:09'),
+(12, 3, 'Flat White', 'Similar to a latte, but with more espresso and a smoother milk texture.', 25000.00, 'img6.jpeg', 21, '2025-01-30 06:49:50', '2025-01-30 14:18:12'),
+(13, 2, 'Affogato', 'Espresso poured over a scoop of vanilla ice cream.', 21000.00, 'img7.jpeg', 23, '2025-01-30 07:02:10', '2025-01-30 14:18:35'),
+(14, 2, 'Macchiato ', 'Espresso with a little milk foam on top.', 17000.00, 'img8.jpg', 16, '2025-01-30 07:02:10', '2025-01-30 14:19:05');
 
 -- --------------------------------------------------------
 
@@ -302,8 +291,10 @@ CREATE TABLE `services` (
 --
 
 INSERT INTO `services` (`id`, `title`, `sub_title`, `article`, `description`, `images`, `create_at`, `update_at`) VALUES
-(1, ' cursus magna', 'Morbi leo risus, porta ac consectetur ac, vestibulum at eros.Primeluis Boreisis. Aigis morus torekysis', 'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor', '', 'logo.png', '2025-01-26 14:45:26', '2025-01-26 15:25:20'),
-(2, 'sed consectetur.', 'Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.', 'Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.', '', 'gallery-4.jpg', '2025-01-26 15:05:25', '2025-01-26 15:05:25');
+(1, ' cursus magna', 'Morbi leo risus, porta ac consectetur ac, vestibulum at eros.Primeluis Boreisis. Aigis morus torekysis', 'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor', '', 'pngwing.com (2).png', '2025-01-26 14:45:26', '2025-01-30 12:35:03'),
+(2, 'sed consectetur.', 'Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.', 'Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.', '', 'pngwing.com5.png', '2025-01-26 15:05:25', '2025-01-30 13:45:13'),
+(4, 'Aenean lacinia ', 'bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.', ' Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.', '', 'pngwing.com (4).png', '2025-01-30 12:51:33', '2025-01-30 12:53:48'),
+(6, 'Finibus Bonorum', ' The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero\'s De Finibus Bonorum et Malorum for use in a type specimen book.', 'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero\'s De Finibus Bonorum et Malorum for use in a type specimen book.', '', 'pngwing.com.png', '2025-01-30 13:22:02', '2025-01-30 13:40:19');
 
 -- --------------------------------------------------------
 
@@ -332,7 +323,9 @@ INSERT INTO `user` (`id`, `id_level`, `username`, `phone`, `address`, `email`, `
 (2, 2, 'Jasen Yurhadi', '03947488', 'Jakarta', 'jasen@gmail.com', '123', '2025-01-17 15:24:12', '2025-01-18 12:05:29'),
 (3, 2, 'Doni Iryawan', '03947488', 'Tangerang', '', '', '2025-01-18 11:16:58', '2025-01-21 15:50:53'),
 (4, 2, 'Yohana Rahmadi', '03947488', 'Bandung', 'Yohana@gmail.com', '', '2025-01-21 17:01:04', '2025-01-21 17:01:35'),
-(5, 2, 'Anton Martius', '03947488', 'Madura', 'anton@gmail.com', '1234', '2025-01-22 03:46:12', '2025-01-27 13:18:32');
+(5, 2, 'Anton Martius', '03947488', 'Pasuruan', 'anton@gmail.com', '1234', '2025-01-22 03:46:12', '2025-01-28 11:10:34'),
+(19, 2, 'Johan Septian Purwadi', '03947488', 'Pasuruan', 'Johan@gmail.com', '123', '2025-01-28 18:13:54', '2025-01-28 18:13:54'),
+(20, 2, 'Ari Era', '082111760568', 'Eraari02@yahoo.co.id', 'Eraari02@yahoo.co.id', 'al666666', '2025-01-30 14:24:23', '2025-01-30 14:24:23');
 
 --
 -- Indexes for dumped tables
@@ -453,7 +446,7 @@ ALTER TABLE `contact`
 -- AUTO_INCREMENT for table `detail_order`
 --
 ALTER TABLE `detail_order`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- AUTO_INCREMENT for table `environment`
@@ -471,25 +464,25 @@ ALTER TABLE `level`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `services`
 --
 ALTER TABLE `services`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables

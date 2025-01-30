@@ -17,7 +17,7 @@ if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $delete = mysqli_query($koneksi, "DELETE FROM orders WHERE id='$id'");
 }
-// print_r($updateStatus);
+// print_r($resultDetail);
 // die();
 
 ?>
@@ -82,14 +82,16 @@ if (isset($_GET['delete'])) {
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <div class="row">
-                                                                <div class="col-sm-6 mb-sm-0">
+                                                                <div class="col-sm-12 mb-sm-0 d-flex justify-content-between">
                                                                     <h5 class="m-0 p-0">Data Pembelian : </h5>
-                                                                </div>
-                                                                <?php if ($_SESSION['level_id'] == 1): ?>
-                                                                    <div class="col-sm-6 mb-3 mb-sm-0" align="right">
+                                                                    <?php if ($_SESSION['level_id'] == 1): ?>
                                                                         <a href="?" class="btn btn-secondary"><i class='bx bx-arrow-back'></i></a>
-                                                                    </div>
-                                                                <?php endif ?>
+                                                                    <?php else : ?>
+                                                                        <h5 onclick="window.history.back()" class="bx bx-arrow-back btn-sm btn-secondary ">Kembali</h5>
+                                                                    <?php endif ?>
+                                                                </div>
+                                                                <!-- <div class="col-sm-6 mb-3 mb-sm-0" align="right">
+                                                                </div> -->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -213,34 +215,54 @@ if (isset($_GET['delete'])) {
                                                 <tr>
                                                     <td>No.</td>
                                                     <td>No. Invoice</td>
-                                                    <td>Nama Pembeli</td>
                                                     <td>Tanggal Pembelian</td>
+                                                    <?php if (isset(($_GET['SalesDetail']))) :  ?>
+                                                    <?php else : ?>
+                                                        <td>Nama Pembeli</td>
+                                                    <?php endif ?>
                                                     <td>status</td>
                                                     <td>detail</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php $no = 1; ?>
-                                                <?php foreach ($result as $values): ?>
-                                                    <tr>
-                                                        <td><?php echo $no++ ?></td>
-                                                        <td><?php echo $values['order_code']; ?></td>
-                                                        <td><?php echo $values['username']; ?></td>
-                                                        <td><?php echo $values['order_date']; ?></td>
-                                                        <td>
-                                                            <a href="?status=<?php echo $values['id'] ?>&cancel=<?php echo $values['status'] ?>" class="text-white"><?php echo changeStatus($values['status']) ?></a>
+                                                <?php if (isset(($_GET['SalesDetail']))) : ?>
+                                                    <?php foreach ($resultSalesDetail as $valSales) : ?>
+                                                        <tr>
+                                                            <td><?php echo $no++ ?></td>
+                                                            <td><?php echo $valSales['order_code']; ?></td>
+                                                            <td><?php echo $valSales['order_date']; ?></td>
+                                                            <td>
+                                                                <a href="?SalesDetail=<?php echo $valSales['id_user'] ?>" class="text-white"><?php echo changeStatus($valSales['status']) ?></a>
 
-                                                        </td>
-                                                        <td width="150">
-                                                            <a href="?detail=<?php echo $values['order_id'] ?>&id=<?php echo $values['id_user'] ?>" class="btn-sm btn-primary bx bx-show"></a>
-                                                            <a href="?delete=<?php echo $values['order_id'] ?>" onclick=" return confirm('Hapus Ini ?')" class="btn-sm btn-danger bx bx-trash mx-2"></a>
-                                                        </td>
-                                                    </tr>
-                                                <?php endforeach; ?>
+                                                            </td>
+                                                            <td width="150">
+                                                                <a href="?detail=<?php echo $valSales['id'] ?>&id=<?php echo $_SESSION['user_id'] ?>" class="btn-sm btn-primary bx bx-show"></a>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach ?>
+                                                <?php else : ?>
+                                                    <?php foreach ($result as $values): ?>
+                                                        <tr>
+                                                            <td><?php echo $no++ ?></td>
+                                                            <td><?php echo $values['order_code']; ?></td>
+                                                            <td><?php echo $values['order_date']; ?></td>
+                                                            <td><?php echo $values['username']; ?></td>
+                                                            <td>
+                                                                <a href="?status=<?php echo $values['id'] ?>&cancel=<?php echo $values['status'] ?>" class="text-white"><?php echo changeStatus($values['status']) ?></a>
+
+                                                            </td>
+                                                            <td width="150">
+                                                                <a href="?detail=<?php echo $values['order_id'] ?>&id=<?php echo $values['id_user'] ?>" class="btn-sm btn-primary bx bx-show"></a>
+                                                                <a href="?delete=<?php echo $values['order_id'] ?>" onclick=" return confirm('Hapus Ini ?')" class="btn-sm btn-danger bx bx-trash mx-2"></a>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
 
                                             </tbody>
                                         </table>
-                                    <?php endif ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 

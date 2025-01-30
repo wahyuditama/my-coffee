@@ -1,3 +1,9 @@
+<?php
+
+include '../inc/query.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +27,7 @@
                         <div class="col-lg-8">
                             <h1>Services</h1>
                             <p class="mb-0">Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.</p>
-                            <a href="contact.html" class="cta-btn">Available for Hire<br></a>
+                            <a href="contact.php" class="cta-btn">Available for Hire<br></a>
                         </div>
                     </div>
                 </div>
@@ -29,7 +35,7 @@
             <nav class="breadcrumbs">
                 <div class="container">
                     <ol>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="../../index.php">Home</a></li>
                         <li class="current">Services</li>
                     </ol>
                 </div>
@@ -43,37 +49,21 @@
 
                 <div class="row gy-4">
 
-                    <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
-                        <div class="service-item position-relative">
-                            <div class="icon"><i class="bi bi-activity icon"></i></div>
-                            <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
-                            <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
-                        </div>
-                    </div><!-- End Service Item -->
-
-                    <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
-                        <div class="service-item position-relative">
-                            <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
-                            <h4><a href="" class="stretched-link">Sed ut perspici</a></h4>
-                            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
-                        </div>
-                    </div><!-- End Service Item -->
-
-                    <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
-                        <div class="service-item position-relative">
-                            <div class="icon"><i class="bi bi-calendar4-week icon"></i></div>
-                            <h4><a href="" class="stretched-link">Magni Dolores</a></h4>
-                            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>
-                        </div>
-                    </div><!-- End Service Item -->
-
-                    <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
-                        <div class="service-item position-relative">
-                            <div class="icon"><i class="bi bi-broadcast icon"></i></div>
-                            <h4><a href="" class="stretched-link">Nemo Enim</a></h4>
-                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
-                        </div>
-                    </div><!-- End Service Item -->
+                    <?php foreach ($rowServices as $display) : ?>
+                        <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
+                            <div class="service-item position-relative">
+                                <div class="icon">
+                                    <img src="../../admin/upload/<?php echo $display['images'] ?>" width="50" class=img-fluid alt="">
+                                    </i>
+                                </div>
+                                <!-- <div class="icon"><i class="bi bi-activity icon"></i></div> -->
+                                <div class="card-title" style="text-align:justify;">
+                                    <h4><a href="" class="stretched-link"><?php echo $rowServices[0]['title'] ?></a></h4>
+                                    <p><?php echo $rowServices[0]['sub_title'] ?></p>
+                                </div>
+                            </div>
+                        </div><!-- End Service Item -->
+                    <?php endforeach ?>
 
                 </div>
 
@@ -94,47 +84,14 @@
 
                 <div class="row gy-4 gx-lg-5">
 
-                    <div class="col-lg-6">
-                        <div class="pricing-item d-flex justify-content-between">
-                            <h3>Portrait Photography</h3>
-                            <h4>$160.00</h4>
-                        </div>
-                    </div><!-- End Pricing Item -->
-
-                    <div class="col-lg-6">
-                        <div class="pricing-item d-flex justify-content-between">
-                            <h3>Fashion Photography</h3>
-                            <h4>$300.00</h4>
-                        </div>
-                    </div><!-- End Pricing Item -->
-
-                    <div class="col-lg-6">
-                        <div class="pricing-item d-flex justify-content-between">
-                            <h3>Sports Photography</h3>
-                            <h4>$200.00</h4>
-                        </div>
-                    </div><!-- End Pricing Item -->
-
-                    <div class="col-lg-6">
-                        <div class="pricing-item d-flex justify-content-between">
-                            <h3>Still Life Photography</h3>
-                            <h4>$120.00</h4>
-                        </div>
-                    </div><!-- End Pricing Item -->
-
-                    <div class="col-lg-6">
-                        <div class="pricing-item d-flex justify-content-between">
-                            <h3>Wedding Photography</h3>
-                            <h4>$500.00</h4>
-                        </div>
-                    </div><!-- End Pricing Item -->
-
-                    <div class="col-lg-6">
-                        <div class="pricing-item d-flex justify-content-between">
-                            <h3>Photojournalism</h3>
-                            <h4>$200.00</h4>
-                        </div>
-                    </div><!-- End Pricing Item -->
+                    <?php foreach ($rowImages as $pricing) : ?>
+                        <div class="col-lg-6">
+                            <div class="pricing-item d-flex justify-content-between">
+                                <h3><?php echo $pricing['product_name'] ?></h3>
+                                <h4>$<?php echo $pricing['price'] ?></h4>
+                            </div>
+                        </div><!-- End Pricing Item -->
+                    <?php endforeach; ?>
 
                 </div>
 
@@ -151,6 +108,56 @@
                 <p>What they are saying</p>
             </div><!-- End Section Title -->
 
+            <div class="swiper init-swiper">
+                <script type="application/json" class="swiper-config">
+                    {
+                        "loop": true,
+                        "speed": 600,
+                        "autoplay": {
+                            "delay": 5000
+                        },
+                        "slidesPerView": "auto",
+                        "pagination": {
+                            "el": ".swiper-pagination",
+                            "type": "bullets",
+                            "clickable": true
+                        },
+                        "breakpoints": {
+                            "320": {
+                                "slidesPerView": 1,
+                                "spaceBetween": 40
+                            },
+                            "1200": {
+                                "slidesPerView": 3,
+                                "spaceBetween": 1
+                            }
+                        }
+                    }
+                </script>
+                <div class="swiper-wrapper">
+
+                    <?php
+                    foreach ($rowSuggest as $content) : ?>
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                                <p>
+                                    <?php echo $content['suggestion'] ?>
+                                </p>
+                                <div class="profile mt-auto">
+                                    <img src="../../admin/upload/<?php echo $content['foto'] ?>" class="testimonial-img" alt="">
+                                    <h3><?php echo $content['username'] ?></h3>
+                                    <h4><?php echo $content['title'] ?></h4>
+                                </div>
+                            </div>
+
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    <?php endforeach ?>
+
+                </div>
 
 
         </section><!-- /Testimonials Section -->

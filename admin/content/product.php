@@ -27,6 +27,7 @@ if (isset($_POST['simpan'])) {
     } else {
         $queryAddProduct = mysqli_query($koneksi, " INSERT INTO product (id_category,product_name,description,price,stock) VALUES ('$id','$namaProduk','$deskripsi','$price','$stok')");
     }
+
     header('location: product.php?add=success');
     exit();
 }
@@ -40,46 +41,48 @@ $rowEdit   = mysqli_fetch_assoc($queryEdit);
 // jika button edit di klik
 
 if (isset($_POST['edit'])) {
-    $id = $_POST['id_category'];
+    $idCategory = $_POST['id_category'];
     $namaProduk = $_POST['nama_product'];
     $deskripsi = $_POST['deskripsi'];
     $price = $_POST['price'];
     $stok = $_POST['stock'];
 
-    $foto = $rowEdit['image'];
+    // $foto = $rowEdit['image'];
     if (!empty($_FILES['foto']['name'])) {
         $foto = $_FILES['foto']['name'];
-        $ext = strtolower(pathinfo($foto, PATHINFO_EXTENSION));
-        $allowed_ext = ['jpg', 'jpeg', 'png'];
+        $ext = array('PNG', 'JPEG', 'jpg', 'png', 'jpeg', 'jpg');
+        $extpath = pathinfo($foto, PATHINFO_EXTENSION);
 
-        // Validasi ekstensi file
-        if (!in_array($ext, $allowed_ext)) {
-            $errors[] = "Ekstensi file tidak valid. Hanya JPG, JPEG, dan PNG yang diperbolehkan.";
+        if (!in_array($extpath, $ext)) {
+            echo "Format file gambar yang diperbolehkan hanya PNG, JPEG, atau JPG.";
+            die();
         } else {
-            $upload_dir = '../upload/';
-            if (!file_exists($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
-            }
+            unlink(filename: '../upload/' . $rowEdit['foto']);
+            move_uploaded_file($_FILES['foto']['tmp_name'], to: '../upload/' . $foto);
 
-            $img = uniqid() . '.' . $ext;
-            $path_foto = $upload_dir . $img;
-
-            // Upload file
-            if (!move_uploaded_file($_FILES['foto']['tmp_name'], $path_foto)) {
-                $errors[] = "Gagal mengunggah foto : " . $_FILES['foto']['error'];
-            }
+            $update = $koneksi->prepare("UPDATE product SET
+            id_category=?,
+            product_name=?,
+            description=?,
+            price=?,
+            image=?,
+            stock=?
+            WHERE id=?");
+            $update->bind_param("issiisi", $idCategory, $namaProduk, $deskripsi, $price, $foto, $stok, $id);
         }
+    } else {
+        $update = $koneksi->prepare("UPDATE product SET
+        id_category=?,
+        product_name=?,
+        description=?,
+        price=?,
+        stock=?
+        WHERE id=?");
+        $update->bind_param("issiis", $idCategory, $namaProduk, $deskripsi, $price, $stok, $id);
     }
-
-    $update = mysqli_query($koneksi, "UPDATE product SET
-     id_category='$id',
-     product_name='$namaProduk',
-     description='$deskripsi',
-     price='$price',
-     image='$foto',
-     stock='$stok'
-     WHERE id='$id'");
-    header("location:product.php?change=success");
+    if ($update->execute()) {
+        header("location: product.php?replace=success");
+    }
 }
 
 
@@ -89,7 +92,7 @@ if (isset($_GET['delete'])) {
 
     // query / perintah hapus
     $delete = mysqli_query($koneksi, "DELETE FROM product  WHERE id ='$id'");
-    header("location:category.php?hapus=berhasil");
+    header("location:product.php?hapus=berhasil");
 }
 
 // ambil data dari category dan product untuk tampilan depan
@@ -237,8 +240,8 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                         <div class="card-header border-bottom">Kategori Coffee</div>
                                         <div class="card-body">
                                             <?php if (isset($_GET['hapus'])): ?>
-                                                <div class="alert alert-success" role="alert">
-
+                                                <div class="alert alert-success " role="alert">
+                                                    Data berhasil Dihapus
                                                 </div>
                                             <?php endif ?>
                                             <div align="right" class="mb-3">
@@ -259,11 +262,11 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                 <tbody>
                                                     <?php $no = 1;
                                                     while ($rowProduct = mysqli_fetch_assoc($selectCategory)) { ?>
-                                                        <tr>
+                                                        <tr style="text-align:justify;">
                                                             <td><?php echo $no++ ?></td>
                                                             <td><?php echo $rowProduct['name_category'] ?></td>
                                                             <td><?php echo $rowProduct['product_name'] ?></td>
-                                                            <td><?php echo $rowProduct['price'] ?></td>
+                                                            <td><?php echo 'Rp. ' . number_format($rowProduct['price'], 0, ',', '.') ?></td>
                                                             <td><?php echo $rowProduct['description'] ?></td>
                                                             <td>
                                                                 <a href="product.php?edit=<?php echo $rowProduct['id'] ?>&detail=<?php echo $rowProduct['id'] ?>" class="btn-sm btn-primary btn-sm">

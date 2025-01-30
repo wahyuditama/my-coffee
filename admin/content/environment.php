@@ -102,9 +102,11 @@ while ($row = mysqli_fetch_assoc($query)) {
                                 <div class="card-title border-bottom p-2 d-flex justify-content-between">
                                     <h5 class="pt-2">Environment</h5>
                                     <?php if (isset($_GET['tambah']) || isset($_GET['edit'])) :  ?>
-                                        <a href="?" class="btn-sm btn-outline-secondary">Kembali</a>
+                                        <a href="?" class="btn-sm btn-outline-secondary pt-2">Kembali</a>
                                     <?php else : ?>
-                                        <a href="?tambah" class="btn-sm btn-outline-primary pt-2">Tambah Data</a>
+                                        <?php if ($_SESSION['level_id'] == 1) : ?>
+                                            <a href="?tambah" class="btn-sm btn-outline-primary pt-2">Tambah Data</a>
+                                        <?php endif ?>
                                     <?php endif ?>
                                 </div>
                                 <?php if (isset($_GET['tambah']) || isset($_GET['edit'])) : ?>

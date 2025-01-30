@@ -27,6 +27,13 @@ while ($rowDetail = mysqli_fetch_assoc($queryProductDetail)) {
     $resultDetail[] = $rowDetail;
 }
 
+$idPay = isset($_GET['SalesDetail']) ? $_GET['SalesDetail'] : '';
+$querySalesDetail = mysqli_query($koneksi, "SELECT * FROM orders WHERE id_user='$idPay'");
+
+$resultSalesDetail = [];
+while ($rowSalesDetail = mysqli_fetch_assoc($querySalesDetail)) {
+    $resultSalesDetail[] = $rowSalesDetail;
+}
 //fuction ubah status
 function changeStatus($status)
 {

@@ -1,5 +1,6 @@
 <?php
 include '../database/koneksi.php';
+
 session_start();
 //Tambah user
 if (isset($_POST['tambah'])) {
@@ -29,10 +30,16 @@ if (isset($_POST['edit'])) {
     $idLevel = $_POST['level'];
     $update = mysqli_query($koneksi, "UPDATE user SET id_level='$idLevel', username='$username', phone='$phone', address='$alamat', email='$email' WHERE id='$id'");
 
+    // print_r($update);
+    // die();
     if ($_SESSION['user_id'] == 1) {
         header(header: "location:user.php?ubah=berhasil");
     } else {
-        header("location: user.php?edit=$id");
+        echo
+        "<script>
+            alert('Data Berhasil Diubah');
+            window.location.href = 'user.php?edit=$id';
+        </script>";
     }
 }
 
@@ -139,7 +146,7 @@ $level = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
                                                 <div class="col-md-6 mb-3">
                                                     <label for="" class="mb-1">Pilih Level</label>
                                                     <?php if ($_SESSION['user_id'] == 1): ?>
-                                                        <select name="level" id="" class="form-control" <?php ($_SESSION['user_id'] == 2) ? 'disabled' : '' ?>>
+                                                        <select name="level" id="" class="form-control">
                                                             <?php
                                                             while ($rowLevel = mysqli_fetch_assoc($level)) { ?>
                                                                 <option value="<?php echo $rowLevel['id'] ?>" <?php echo isset($_GET['edit']) && $rowEdit['id_level'] == $rowLevel['id'] ? 'selected' : '' ?>>
@@ -148,7 +155,8 @@ $level = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
                                                             <?php } ?>
                                                         </select>
                                                     <?php else : ?>
-                                                        <input type="text" name="" value="<?php echo isset($_GET['edit']) ? $rowEdit['level_name'] : '' ?>" class="form-control" readonly>
+                                                        <input type="text" value="<?php echo isset($_GET['edit']) ? $rowEdit['level_name'] : '' ?>" class="form-control" readonly>
+                                                        <input type="hidden" name="level" value="<?php echo isset($_GET['edit']) ? $rowEdit['id_level'] : '' ?>">
                                                     <?php endif ?>
                                                 </div>
                                             </div>

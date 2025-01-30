@@ -4,8 +4,8 @@
         <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
             <!-- Uncomment the line below if you also wish to use an image logo -->
             <!-- <img src="assets/img/logo.png" alt=""> -->
-            <i class="bi bi-camera"></i>
-            <h5 class="sitename" style="font-family:Playwrite AU SA, serif;">My-Coffee</h5>
+            <i class='bx bx-coffee'></i>
+            <h5 class="sitename text-warning" style="font-family:Playwrite AU SA, serif;">My-Coffee</h5>
         </a>
 
         <nav id="navmenu" class="navmenu">

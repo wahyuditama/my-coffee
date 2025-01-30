@@ -89,7 +89,7 @@
         <li class="menu-item">
             <a href="../content/order.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Order Pesanan</div>
+                <div data-i18n="Basic">Order Product</div>
             </a>
         </li>
         <!-- User interface -->
@@ -152,11 +152,22 @@
         <!-- Misc -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
         <li class="menu-item">
+            <?php if ($_SESSION['level_id'] == 2): ?>
+                <a
+                    href="product_pay.php?SalesDetail=<?php echo $_SESSION['user_id'] ?>"
+                    target=""
+                    class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-cart"></i>
+                    <div data-i18n="Support">Your Purchases</div>
+                </a>
+            <?php endif ?>
+        </li>
+        <li class="menu-item">
             <a
                 href="environment.php"
                 target=""
                 class="menu-link">
-                <i class="menu-icon tf-icons bx bx-support"></i>
+                <i class="menu-icon tf-icons bx bx-buoy"></i>
                 <div data-i18n="Support">Environment</div>
             </a>
         </li>

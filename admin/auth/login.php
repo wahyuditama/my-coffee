@@ -6,10 +6,11 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $queryLogin = mysqli_query($koneksi, "SELECT orders.id as id_orders, user.* FROM user LEFT JOIN orders ON user.id = orders.id_user ");
+    $queryLogin = mysqli_query($koneksi, "SELECT orders.id as id_orders, orders.status, user.* FROM user LEFT JOIN orders ON user.id = orders.id_user ");
 
     while ($rowLogin = mysqli_fetch_assoc($queryLogin)) {
         if ($rowLogin['email'] == $email && $rowLogin['password'] == $password) {
+            $_SESSION['Status'] = $rowLogin['status'];
             $_SESSION['orders_id'] = $rowLogin['id_orders'];
             $_SESSION['user_id'] = $rowLogin['id'];
             $_SESSION['level_id'] = $rowLogin['id_level'];
@@ -52,12 +53,12 @@ if (isset($_POST['login'])) {
         name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Login Basic - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>My-Coffee</title>
 
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="../assets/img/backgrounds/side-logo-coffee.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
