@@ -29,9 +29,9 @@ if (isset($_POST['edit'])) {
 $queryCategory = mysqli_query($koneksi, "SELECT * FROM category");
 // mysqli_fetch_assoc($query) = untuk menjadikan hasil query menjadi sebuah data (object,array)
 
-// jika parameternya ada ?delete=nilai param
+// Delete
 if (isset($_GET['delete'])) {
-    $id = $_GET['delete']; //mengambil nilai params
+    $id = $_GET['delete']; 
 
     // query / perintah hapus
     $delete = mysqli_query($koneksi, "DELETE FROM category  WHERE id ='$id'");
