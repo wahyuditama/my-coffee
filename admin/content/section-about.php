@@ -1,5 +1,7 @@
 <?php
 include '../database/koneksi.php';
+include '../layout/encryp.php';
+
 session_start();
 
 if (isset($_POST['submit'])) {
@@ -28,7 +30,7 @@ if (isset($_POST['submit'])) {
 }
 
 //Edit Data Suggestion
-$id = isset($_GET['edit']) ? $_GET['edit'] : '';
+$id = isset($_GET['edit']) ? decryptId($_GET['edit'], $key) : '';
 $editData = mysqli_query($koneksi, "SELECT * FROM about WHERE id='$id'");
 $rowEdit = mysqli_fetch_assoc($editData);
 
@@ -66,7 +68,7 @@ if (isset($_POST['edit'])) {
 
 //Delete
 if (isset($_GET['delete'])) {
-    $id_delete = $_GET['delete'];
+    $id_delete = decryptId($_GET['delete'], $key);
     mysqli_query($koneksi, "DELETE FROM about WHERE id='$id_delete'");
 }
 //ambil data

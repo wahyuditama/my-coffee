@@ -1,5 +1,6 @@
 <?php
 include '../database/koneksi.php';
+include '../layout/encryp.php';
 
 session_start();
 //Tambah user
@@ -16,7 +17,7 @@ if (isset($_POST['tambah'])) {
 // print_r($insert);
 // die();
 //edit data user
-$id = isset($_GET['edit']) ? $_GET['edit'] : '';
+$id = isset($_GET['edit']) ? decryptId($_GET['edit'], $key) : '';
 $editData = mysqli_query($koneksi, "SELECT level.level_name, user.* FROM user LEFT JOIN level ON user.id_level = level.id
 WHERE user.id ='$id'");
 
@@ -45,7 +46,7 @@ if (isset($_POST['edit'])) {
 
 //Delet Data user
 
-$id_hapus = isset($_GET['delete']) ? $_GET['delete'] : '';
+$id_hapus = isset($_GET['delete']) ? decryptId($_GET['delete'], $key) : '';
 if ($id_hapus) {
     mysqli_query($koneksi, "DELETE FROM user WHERE id='$id_hapus'");
     header("location: user.php?hapus=berhasil");
@@ -110,8 +111,12 @@ $level = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
                         <?php if (isset($_GET['edit']) || isset($_GET['tambah'])) : ?>
                             <div class="row">
                                 <div class="card">
-                                    <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> user</div>
-                                    <div class="card-body">
+                                    <div class="card-header d-flex justify-content-between">
+                                        <a href=""><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> user</a>
+                                        <a href="javascript:window.history.back();" class="btn btn-sm btn-secondary">Kembali</a>
+                                    </div>
+                                    <hr>
+                                    <php class="card-body">
                                         <form action="" method="post">
                                             <div class="row">
                                                 <div class="col-md-6 mb-3">
@@ -174,7 +179,7 @@ $level = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
                                             </div>
                                             <button type="submit" name="<?php echo isset($_GET['edit']) ? 'edit' : 'tambah' ?>" class="btn-sm btn-primary">Submit</button>
                                         </form>
-                                    </div>
+                                    </php>
                                 </div>
                             </div>
                         <?php else : ?>
@@ -206,15 +211,16 @@ $level = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
                                                 <tbody>
                                                     <?php
                                                     $no = 1;
-                                                    while ($rowuser = mysqli_fetch_assoc($queryuser)) { ?>
+                                                    while ($rowuser = mysqli_fetch_assoc($queryuser)) {
+                                                        $encrypt = encryptId($rowuser['id'], $key) ?>
                                                         <tr>
                                                             <td><?php echo $no++ ?></td>
                                                             <td><?php echo $rowuser['username'] ?></td>
                                                             <td><?php echo $rowuser['phone'] ?></td>
                                                             <td><?php echo $rowuser['address'] ?></td>
                                                             <td>
-                                                                <a href="?edit=<?php echo $rowuser['id'] ?>" class="btn-sm btn-success bx bx-pencil"></a>
-                                                                <a href="?delete=<?php echo $rowuser['id'] ?>" class="btn-sm btn-danger bx bx-trash"></a>
+                                                                <a href="?edit=<?php echo urlencode($encrypt) ?>" class="btn-sm btn-success bx bx-pencil"></a>
+                                                                <a href="?delete=<?php echo urlencode($encrypt) ?>" class="btn-sm btn-danger bx bx-trash"></a>
                                                             </td>
                                                         </tr>
                                                     <?php } ?>

@@ -1,5 +1,6 @@
 <?php
 include '../database/koneksi.php';
+include '../layout/encryp.php';
 session_start();
 
 // jika button simpan di tekan
@@ -11,7 +12,7 @@ if (isset($_POST['simpan'])) {
 }
 
 
-$id  = isset($_GET['edit']) ? $_GET['edit'] : '';
+$id  = isset($_GET['edit']) ? decryptId($_GET['edit'], $key) : '';
 $queryEdit = mysqli_query($koneksi, "SELECT * FROM level WHERE id ='$id'");
 $rowEdit   = mysqli_fetch_assoc($queryEdit);
 
@@ -25,13 +26,10 @@ if (isset($_POST['edit'])) {
     header("location:level.php?ubah=berhasil");
 }
 
-// munculkan / pilih sebuah atau semua kolom dari table user
 $queryLevel = mysqli_query($koneksi, "SELECT * FROM level");
-// mysqli_fetch_assoc($query) = untuk menjadikan hasil query menjadi sebuah data (object,array)
 
-// jika parameternya ada ?delete=nilai param
 if (isset($_GET['delete'])) {
-    $id = $_GET['delete']; //mengambil nilai params
+    $id = decryptId($_GET['delete'], $key);
 
     // query / perintah hapus
     $delete = mysqli_query($koneksi, "DELETE FROM level  WHERE id ='$id'");
@@ -97,8 +95,8 @@ if (isset($_GET['delete'])) {
                                         <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> Level</div>
                                         <div class="card-body">
                                             <?php if (isset($_GET['hapus'])): ?>
-                                                <div class="alert alert-success" role="alert">
-                                                    Data berhasil dihapus
+                                                <div class="alert alert-danger" role="alert">
+                                                    <h5>Data berhasil dihapus</h5>
                                                 </div>
                                             <?php endif ?>
 
@@ -111,11 +109,10 @@ if (isset($_GET['delete'])) {
                                                             name="nama_level"
                                                             placeholder="Masukkan nama Levelanda"
                                                             required
-                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['level_name'] : '' ?>">
+                                                            value="<?php echo isset($_GET['edit']) ? (isset($rowEdit['level_name']) ? $rowEdit['level_name'] : 'Data tidak ditemukan') : ''; ?>">
                                                     </div>
-
                                                     <div class="my-3">
-                                                        <button class="btn btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
+                                                        <button class="btn btn-sm btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
                                                             Simpan
                                                         </button>
                                                     </div>
@@ -148,16 +145,17 @@ if (isset($_GET['delete'])) {
                                                 </thead>
                                                 <tbody>
                                                     <?php $no = 1;
-                                                    while ($rowLevel = mysqli_fetch_assoc($queryLevel)) { ?>
+                                                    while ($rowLevel = mysqli_fetch_assoc($queryLevel)) {
+                                                        $encryptedId = encryptId($rowLevel['id'], $key); ?>
                                                         <tr>
                                                             <td><?php echo $no++ ?></td>
                                                             <td><?php echo $rowLevel['level_name'] ?></td>
                                                             <td>
-                                                                <a href="level.php?edit=<?php echo $rowLevel['id'] ?>" class="btn btn-success btn-sm">
+                                                                <a href="level.php?edit=<?php echo urlencode($encryptedId) ?>" class="btn btn-success btn-sm">
                                                                     <span class="tf-icon bx bx-pencil bx-18px "></span>
                                                                 </a>
                                                                 <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
-                                                                    href="level.php?delete=<?php echo $rowLevel['id'] ?>" class="btn btn-danger btn-sm">
+                                                                    href="level.php?delete=<?php echo urlencode($encryptedId) ?>" class="btn btn-danger btn-sm">
                                                                     <span class="tf-icon bx bx-trash bx-18px "></span>
                                                                 </a>
 

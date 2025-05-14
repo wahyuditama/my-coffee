@@ -1,8 +1,8 @@
 <?php
 include '../database/koneksi.php';
+include '../layout/encryp.php';
 session_start();
 
-// jika button simpan di tekan
 if (isset($_POST['simpan'])) {
     $id = $_POST['id_category'];
     $namaProduk = $_POST['nama_product'];
@@ -33,7 +33,7 @@ if (isset($_POST['simpan'])) {
 }
 
 
-$id  = isset($_GET['edit']) ? $_GET['edit'] : '';
+$id  = isset($_GET['edit']) ? decryptId($_GET['edit'], $key) : '';
 $queryEdit = mysqli_query($koneksi, "SELECT category.name_category, product.* FROM product LEFT JOIN category ON product.id_category = category.id WHERE product.id ='$id'");
 $rowEdit   = mysqli_fetch_assoc($queryEdit);
 
@@ -88,16 +88,14 @@ if (isset($_POST['edit'])) {
 
 // jika parameternya ada ?delete=nilai param
 if (isset($_GET['delete'])) {
-    $id = $_GET['delete']; //mengambil nilai params
+    $id = decryptId($_GET['delete'], $key);
 
-    // query / perintah hapus
     $delete = mysqli_query($koneksi, "DELETE FROM product  WHERE id ='$id'");
     header("location:product.php?hapus=berhasil");
 }
 
-// ambil data dari category dan product untuk tampilan depan
+// ambil data dari category dan product 
 $selectCategory = mysqli_query($koneksi, "SELECT category.name_category, product.* FROM product LEFT JOIN category ON product.id_category = category.id ");
-//ambil data dari category untuk di tambah kategori
 $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
 ?>
 <!DOCTYPE html>
@@ -144,14 +142,17 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                 <!-- Tambah & Edit Barang -->
                                 <div class="col-sm-12">
                                     <div class="card">
-                                        <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> Kategori Barang</div>
+                                        <div class="card-header d-flex justify-content-between">
+                                            <a><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> Kategori Barang</a>
+                                            <a href="javascript:window.history.back();" class="btn btn-sm btn-secondary">kembali</a>
+                                        </div>
+                                        <hr>
                                         <div class="card-body">
                                             <?php if (isset($_GET['hapus'])): ?>
                                                 <div class="alert alert-success" role="alert">
                                                     Data berhasil dihapus
                                                 </div>
                                             <?php endif ?>
-
                                             <form action="" method="post" enctype="multipart/form-data">
                                                 <div class="mb-3 row">
                                                     <div class="col-sm-6">
@@ -221,7 +222,7 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                 </div>
                                                 <div class="my-3">
                                                     <?php if (!isset($_GET['detail'])) : ?>
-                                                        <button class="btn btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
+                                                        <button class="btn btn-sm btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
                                                             Simpan
                                                         </button>
                                                     <?php endif ?>
@@ -261,7 +262,8 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                 </thead>
                                                 <tbody>
                                                     <?php $no = 1;
-                                                    while ($rowProduct = mysqli_fetch_assoc($selectCategory)) { ?>
+                                                    while ($rowProduct = mysqli_fetch_assoc($selectCategory)) {
+                                                        $encrypt = encryptId($rowProduct['id'], $key) ?>
                                                         <tr style="text-align:justify;">
                                                             <td><?php echo $no++ ?></td>
                                                             <td><?php echo $rowProduct['name_category'] ?></td>
@@ -269,14 +271,14 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                             <td><?php echo 'Rp. ' . number_format($rowProduct['price'], 0, ',', '.') ?></td>
                                                             <td><?php echo $rowProduct['description'] ?></td>
                                                             <td>
-                                                                <a href="product.php?edit=<?php echo $rowProduct['id'] ?>&detail=<?php echo $rowProduct['id'] ?>" class="btn-sm btn-primary btn-sm">
+                                                                <a href="product.php?edit=<?php echo urldecode($encrypt) ?>&detail=<?php echo urldecode($encrypt) ?>" class="btn-sm btn-primary btn-sm">
                                                                     <span class="tf-icon bx bx-show bx-18px "></span>
                                                                 </a>
-                                                                <a href="product.php?edit=<?php echo $rowProduct['id'] ?>" class="btn-sm btn-success btn-sm mx-2">
+                                                                <a href="product.php?edit=<?php echo urldecode($encrypt) ?>" class="btn-sm btn-success btn-sm mx-2">
                                                                     <span class="tf-icon bx bx-pencil bx-18px "></span>
                                                                 </a>
                                                                 <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
-                                                                    href="product.php?delete=<?php echo $rowProduct['id'] ?>" class="btn-sm btn-danger btn-sm">
+                                                                    href="product.php?delete=<?php echo urldecode($encrypt) ?>" class="btn-sm btn-danger btn-sm">
                                                                     <span class="tf-icon bx bx-trash bx-18px "></span>
                                                                 </a>
                                                             </td>

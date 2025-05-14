@@ -1,5 +1,6 @@
 <?php
 include '../database/koneksi.php';
+include '../layout/encryp.php';
 session_start();
 
 // jika button simpan di tekan
@@ -11,7 +12,7 @@ if (isset($_POST['simpan'])) {
 }
 
 
-$id  = isset($_GET['edit']) ? $_GET['edit'] : '';
+$id  = isset($_GET['edit']) ? decryptId($_GET['edit'], $key) : '';
 $queryEdit = mysqli_query($koneksi, "SELECT * FROM category WHERE id ='$id'");
 $rowEdit   = mysqli_fetch_assoc($queryEdit);
 
@@ -31,7 +32,7 @@ $queryCategory = mysqli_query($koneksi, "SELECT * FROM category");
 
 // Delete
 if (isset($_GET['delete'])) {
-    $id = $_GET['delete']; 
+    $id = decryptId($_GET['delete'], $key);
 
     // query / perintah hapus
     $delete = mysqli_query($koneksi, "DELETE FROM category  WHERE id ='$id'");
@@ -97,7 +98,7 @@ if (isset($_GET['delete'])) {
                                         <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> Kategori Barang</div>
                                         <div class="card-body">
                                             <?php if (isset($_GET['hapus'])): ?>
-                                                <div class="alert alert-success" role="alert">
+                                                <div class="alert alert-danger" role="alert">
                                                     Data berhasil dihapus
                                                 </div>
                                             <?php endif ?>
@@ -111,12 +112,12 @@ if (isset($_GET['delete'])) {
                                                             name="name_category"
                                                             placeholder="Masukkan nama kategori"
                                                             required
-                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['name_category'] : '' ?>">
+                                                            value="<?php echo isset($_GET['edit']) ? (isset($rowEdit['name_category']) ? $rowEdit['name_category'] : 'Data tidak ditemukan') : ''; ?>">
                                                     </div>
                                                 </div>
                                                 <div class="my-3">
-                                                    <button class="btn btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
-                                                        Simpan
+                                                    <button class="btn btn-sm btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
+                                                        <?php echo isset($rowEdit) == null ? '<a href="javascript:window.history.back();">Kembali<a/>' : 'Simpan' ?>
                                                     </button>
                                                 </div>
                                             </form>
@@ -148,16 +149,17 @@ if (isset($_GET['delete'])) {
                                                 </thead>
                                                 <tbody>
                                                     <?php $no = 1;
-                                                    while ($rowCategory = mysqli_fetch_assoc($queryCategory)) { ?>
+                                                    while ($rowCategory = mysqli_fetch_assoc($queryCategory)) {
+                                                        $encrypt = encryptId($rowCategory['id'], $key) ?>
                                                         <tr>
                                                             <td><?php echo $no++ ?></td>
                                                             <td><?php echo $rowCategory['name_category'] ?></td>
                                                             <td>
-                                                                <a href="category.php?edit=<?php echo $rowCategory['id'] ?>" class="btn btn-success btn-sm">
+                                                                <a href="category.php?edit=<?php echo urlencode($encrypt) ?>" class="btn btn-success btn-sm">
                                                                     <span class="tf-icon bx bx-pencil bx-18px "></span>
                                                                 </a>
                                                                 <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
-                                                                    href="category.php?delete=<?php echo $rowCategory['id'] ?>" class="btn btn-danger btn-sm">
+                                                                    href="category.php?delete=<?php echo urlencode($encrypt) ?>" class="btn btn-danger btn-sm">
                                                                     <span class="tf-icon bx bx-trash bx-18px "></span>
                                                                 </a>
 
