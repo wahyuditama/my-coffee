@@ -88,7 +88,7 @@ if (isset($_GET['delete'])) {
 
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
-                            <?php if (isset($_GET['edit']) || isset($_GET['tambah'])) : ?>
+                            <?php if (isset($_GET['edit']) || isset($_GET['add_level'])) : ?>
                                 <!-- Tambah & Edit Level -->
                                 <div class="col-sm-12">
                                     <div class="card">
@@ -104,17 +104,27 @@ if (isset($_GET['delete'])) {
                                                 <div class="mb-3 row">
                                                     <div class="col-sm-6">
                                                         <label for="" class="form-label">Nama Level</label>
-                                                        <input type="text"
-                                                            class="form-control"
-                                                            name="nama_level"
-                                                            placeholder="Masukkan nama Levelanda"
-                                                            required
-                                                            value="<?php echo isset($_GET['edit']) ? (isset($rowEdit['level_name']) ? $rowEdit['level_name'] : 'Data tidak ditemukan') : ''; ?>">
+                                                        <?php if (isset($_GET['edit']) && !isset($rowEdit['id'])) : ?>
+                                                            <h5 style="color:red;">Data tidak ditemukan</h5>
+                                                        <?php else : ?>
+                                                            <input
+                                                                type="text"
+                                                                class="form-control"
+                                                                name="nama_level"
+                                                                placeholder="Masukkan nama Level Anda"
+                                                                required
+                                                                value="<?php echo isset($_GET['edit']) ? $rowEdit['level_name'] : '' ?>">
+                                                        <?php endif; ?>
+
                                                     </div>
                                                     <div class="my-3">
-                                                        <button class="btn btn-sm btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
-                                                            Simpan
-                                                        </button>
+                                                        <?php if (isset($_GET['edit']) && !isset($rowEdit['id'])) : ?>
+                                                            <a href="level.php?" class="btn btn-sm btn-secondary">Kembali</a>
+                                                        <?php else : ?>
+                                                            <button class="btn btn-sm btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
+                                                                Simpan
+                                                            </button>
+                                                        <?php endif ?>
                                                     </div>
                                             </form>
                                         </div>
@@ -132,7 +142,7 @@ if (isset($_GET['delete'])) {
                                                 </div>
                                             <?php endif ?>
                                             <div align="right" class="mb-3">
-                                                <a href="level.php?tambah" class="btn btn-primary">Tambah</a>
+                                                <a href="level.php?add_level" class="btn btn-primary">Tambah</a>
                                             </div>
                                             <table class="table table-bordered text-center">
                                                 <thead>
@@ -192,9 +202,8 @@ if (isset($_GET['delete'])) {
 
     <div class="buy-now">
         <a
-            href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-            target="_blank"
-            class="btn btn-danger btn-buy-now">Welcome to MY-Coffee</a>
+            href="#"
+            class="btn btn-buy-now-new text-white">Welcome to MY-Coffee</a>
     </div>
 
     <?php include '../layout/js.php' ?>

@@ -1,5 +1,6 @@
 <?php
 include '../database/koneksi.php';
+include '../layout/encryp.php';
 // session_start();
 
 $queryProductPay = mysqli_query($koneksi, "SELECT user.username, orders.id as order_id, orders.* FROM orders 
@@ -8,6 +9,11 @@ $result = [];
 while ($rowProductPay = mysqli_fetch_assoc($queryProductPay)) {
     $result[] = $rowProductPay;
 }
+
+//Level
+$id = isset($_GET['edit']) ? decryptId($_GET['edit'], $key) : '';
+$editData = mysqli_query($koneksi, "SELECT level.level_name, user.* FROM user LEFT JOIN level ON user.id_level = level.id
+WHERE user.id ='$id'");
 
 
 // Query Untuk Detail Pembelian
@@ -39,11 +45,11 @@ function changeStatus($status)
 {
     switch ($status) {
         case '1':
-            $badge = "<span class='btn-sm btn bg-success'> Selesai Dipesan</span>";
+            $badge = "<span class='btn-sm btn bg-success text-white'> Selesai Dipesan</span>";
             break;
 
         default:
-            $badge = "<span class='btn-sm btn bg-warning'> Pesanan Baru</span>";
+            $badge = "<span class='btn-sm btn bg-warning text-white'> Pesanan Baru</span>";
 
             break;
     }

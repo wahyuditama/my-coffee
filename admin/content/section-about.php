@@ -122,50 +122,59 @@ while ($rowAbout = mysqli_fetch_assoc($queryAbout)) {
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
 
-
                             <?php if (isset($_GET['edit']) || isset($_GET['tambah'])) : ?>
                                 <!-- Tambah & Edit Sugesstion -->
                                 <div class="card">
-                                    <div class="card-title"><?php echo isset($_GET['tambah']) ? 'Tambah' : 'Edit' ?> Saran & Masukan</div>
+                                    <div class="card-title d-flex justify-content-between">
+                                        <h5 class="m-3"><?php echo isset($_GET['tambah']) ? 'Tambah' : 'Edit' ?> Saran & Masukan</h5>
+                                        <a href="section-about.php?" class="btn btn-sm btn-secondary m-3">Kembali</a>
+                                    </div>
+                                    <hr>
                                     <div class="card-body">
-                                        <form action="" method="post" enctype="multipart/form-data">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label for="username" class="form-label mb-3">Masukan Nama Anda</label>
-                                                    <input type="text"
-                                                        class="form-control"
-                                                        id="username"
-                                                        name="username"
-                                                        value="<?php echo isset($_GET['edit']) ? $rowEdit['username'] : '' ?>"
-                                                        required>
-                                                    <label for="title" class="form-label mt-3">Masukan title </label>
-                                                    <input type="text"
-                                                        class="form-control"
-                                                        id="title"
-                                                        name="title"
-                                                        value="<?php echo isset($_GET['edit']) ? $rowEdit['title'] : '' ?>">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label for="deskripsi" class="form-label mb-3">Masukan Deskripsi Saran & Masukan</label>
-                                                    <?php if (isset($_GET['edit'])): ?>
-                                                        <textarea name="deskripsi" id="" class="form-control" value=""><?php echo isset($_GET['edit']) ? $rowEdit['suggestion'] : '' ?></textarea>
-                                                    <?php else: ?>
-                                                        <input type="deskripsi"
+                                        <?php if (isset($_GET['edit']) && !isset($rowEdit)) : ?>
+                                            <!-- protected -->
+                                            <h5 class="text-danger">Data Tidak Ditemukan</h5>
+                                        <?php else : ?>
+                                            <form action="" method="post" enctype="multipart/form-data">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label for="username" class="form-label mb-3">Masukan Nama Anda</label>
+                                                        <input type="text"
                                                             class="form-control"
-                                                            id="deskripsi"
-                                                            name="deskripsi"
+                                                            id="username"
+                                                            name="username"
+                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['username'] : '' ?>"
                                                             required>
-                                                    <?php endif ?>
-                                                    <label for="foto" class="form-label mt-3">Masukan foto anda (Optional)</label>
-                                                    <input type="file"
-                                                        class="form-control"
-                                                        id="foto"
-                                                        name="foto">
-                                                    <img src="../upload/<?php echo $rowEdit['foto'] ?>" class="mt-3" width="100" height="auto" alt="">
+                                                        <label for="title" class="form-label mt-3">Masukan title </label>
+                                                        <input type="text"
+                                                            class="form-control"
+                                                            id="title"
+                                                            name="title"
+                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['title'] : '' ?>">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="deskripsi" class="form-label mb-3">Masukan Deskripsi Saran & Masukan</label>
+                                                        <?php if (isset($_GET['edit'])): ?>
+                                                            <textarea name="deskripsi" id="" class="form-control" value=""><?php echo isset($_GET['edit']) ? $rowEdit['suggestion'] : '' ?></textarea>
+                                                        <?php else: ?>
+                                                            <input type="deskripsi"
+                                                                class="form-control"
+                                                                id="deskripsi"
+                                                                name="deskripsi"
+                                                                required>
+                                                        <?php endif ?>
+                                                        <label for="foto" class="form-label mt-3">Masukan foto anda (Optional)</label>
+                                                        <input type="file"
+                                                            class="form-control"
+                                                            id="foto"
+                                                            name="foto">
+                                                        <img src="../upload/<?php echo $rowEdit['foto'] ?>" class="mt-3" width="100" height="auto" alt="">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <button type="submit" name="<?php echo isset($_GET['edit']) ? 'edit' : 'submit' ?>" class="btn-md btn-primary mt-3"><?php echo isset($_GET['tambah']) ? 'Tambah' : 'Edit' ?></button>
-                                        </form>
+                                                <button type="submit" name="<?php echo isset($_GET['edit']) ? 'edit' : 'submit' ?>" class="btn-md btn-primary mt-3"><?php echo isset($_GET['tambah']) ? 'Tambah' : 'Edit' ?></button>
+                                            </form>
+                                        <?php endif ?>
+                                        <!-- end-protected -->
                                     </div>
                                 </div>
                             <?php else : ?>
@@ -175,7 +184,7 @@ while ($rowAbout = mysqli_fetch_assoc($queryAbout)) {
                                     </div>
                                     <div class="row my-3">
                                         <?php
-                                        foreach ($resultQuery as $rowAbout) : ?>
+                                        foreach ($resultQuery as $rowAbout) : $encrypt = encryptId($rowAbout['id'], $key) ?>
                                             <div class="col-md-6">
                                                 <div class="card shadow p-3 mb-5 bg-body-tertiary rounded" height="40">
                                                     <div class="row">
@@ -202,10 +211,10 @@ while ($rowAbout = mysqli_fetch_assoc($queryAbout)) {
                                                     <div class="card mt-3">
                                                         <?php if ($_SESSION['level_id'] == 1) : ?>
                                                             <div class="col-md-12 border-top pt-3" align="right">
-                                                                <a href="?edit=<?php echo $rowAbout['id'] ?>" class="btn-sm btn-success mx-2" width="20">
+                                                                <a href="?edit=<?php echo urlencode($encrypt) ?>" class="btn-sm btn-success mx-2" width="20">
                                                                     <span class="tf-icon bx bx-pencil bx-18px "></span>
                                                                 </a>
-                                                                <a onclick="return confrim ('sure you want to delete?')" href="?delete=<?php echo $rowAbout['id'] ?>" class="btn-sm btn-danger" width="20">
+                                                                <a onclick="return confrim ('sure you want to delete?')" href="?delete=<?php echo urlencode($encrypt) ?>" class="btn-sm btn-danger" width="20">
                                                                     <span class="tf-icon bx bx-trash bx-18px "></span>
                                                                 </a>
                                                             </div>
@@ -253,9 +262,8 @@ while ($rowAbout = mysqli_fetch_assoc($queryAbout)) {
 
     <div class="buy-now">
         <a
-            href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-            target="_blank"
-            class="btn btn-danger btn-buy-now">Welcome to MY-Coffee</a>
+            href="#"
+            class="btn btn-buy-now-new text-white">Welcome to MY-Coffee</a>
     </div>
 
 

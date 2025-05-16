@@ -301,9 +301,8 @@ if (isset($_GET['delete'])) {
 
     <div class="buy-now">
         <a
-            href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-            target="_blank"
-            class="btn btn-danger btn-buy-now">Welcome to MY-Coffee</a>
+            href="#"
+            class="btn btn-buy-now-new text-white">Welcome to MY-Coffee</a>
     </div>
 
     <?php include '../layout/js.php' ?>

@@ -101,15 +101,15 @@ while ($row = mysqli_fetch_assoc($query)) {
                             <div class="card">
                                 <div class="card-title border-bottom p-2 d-flex justify-content-between">
                                     <h5 class="pt-2">Environment</h5>
-                                    <?php if (isset($_GET['tambah']) || isset($_GET['edit'])) :  ?>
+                                    <?php if (isset($_GET['add_environment']) || isset($_GET['edit'])) :  ?>
                                         <a href="?" class="btn-sm btn-outline-secondary pt-2">Kembali</a>
                                     <?php else : ?>
                                         <?php if ($_SESSION['level_id'] == 1) : ?>
-                                            <a href="?tambah" class="btn-sm btn-outline-primary pt-2">Tambah Data</a>
+                                            <a href="?add_environment" class="btn-sm btn-outline-primary pt-2">Tambah Data</a>
                                         <?php endif ?>
                                     <?php endif ?>
                                 </div>
-                                <?php if (isset($_GET['tambah']) || isset($_GET['edit'])) : ?>
+                                <?php if (isset($_GET['add_environment']) || isset($_GET['edit'])) : ?>
                                     <form action="" method="post">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -230,9 +230,8 @@ while ($row = mysqli_fetch_assoc($query)) {
 
     <div class="buy-now">
         <a
-            href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-            target="_blank"
-            class="btn btn-danger btn-buy-now">Welcome to MY-Coffee</a>
+            href="#"
+            class="btn btn-buy-now-new text-white">Welcome to MY-Coffee</a>
     </div>
 
     <script>

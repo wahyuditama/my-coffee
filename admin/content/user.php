@@ -1,8 +1,8 @@
 <?php
+session_start();
 include '../database/koneksi.php';
 include '../layout/encryp.php';
 
-session_start();
 //Tambah user
 if (isset($_POST['tambah'])) {
     $username = $_POST['username'];
@@ -112,73 +112,77 @@ $level = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
                             <div class="row">
                                 <div class="card">
                                     <div class="card-header d-flex justify-content-between">
-                                        <a href=""><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> user</a>
+                                        <a href=""><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> <?php echo empty($_SESSION['user_id'] == 1) ? 'Profile' : 'User' ?></a>
                                         <a href="javascript:window.history.back();" class="btn btn-sm btn-secondary">Kembali</a>
                                     </div>
                                     <hr>
                                     <php class="card-body">
-                                        <form action="" method="post">
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="" class="form-label">Nama user</label>
-                                                    <input type="text"
-                                                        class="form-control"
-                                                        name="username"
-                                                        placeholder="Masukkan nama Pelanggan"
-                                                        required
-                                                        value="<?php echo isset($_GET['edit']) ? $rowEdit['username'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                        <?php if (isset($_GET['edit']) && !isset($rowEdit)) : ?>
+                                            <h5 class="text-danger">Data Tidak Ditemukan</h5>
+                                        <?php else : ?>
+                                            <form action="" method="post">
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="" class="form-label">Nama user</label>
+                                                        <input type="text"
+                                                            class="form-control"
+                                                            name="username"
+                                                            placeholder="Masukkan nama Pelanggan"
+                                                            required
+                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['username'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="" class="form-label">Nomor Telepon</label>
+                                                        <input type="text"
+                                                            class="form-control"
+                                                            name="telepon"
+                                                            placeholder="Masukkan Nomor Telepon"
+                                                            required
+                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['phone'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="" class="form-label">Nomor Telepon</label>
-                                                    <input type="text"
-                                                        class="form-control"
-                                                        name="telepon"
-                                                        placeholder="Masukkan Nomor Telepon"
-                                                        required
-                                                        value="<?php echo isset($_GET['edit']) ? $rowEdit['phone'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="" class="form-label">Alamat Pelanggan</label>
+                                                        <input type="text"
+                                                            class="form-control"
+                                                            name="alamat"
+                                                            placeholder="Masukkan Alamat"
+                                                            required
+                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['address'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="" class="mb-1">Pilih Level</label>
+                                                        <?php if ($_SESSION['user_id'] == 1): ?>
+                                                            <select name="level" id="" class="form-control">
+                                                                <?php
+                                                                while ($rowLevel = mysqli_fetch_assoc($level)) { ?>
+                                                                    <option value="<?php echo $rowLevel['id'] ?>" <?php echo isset($_GET['edit']) && $rowEdit['id_level'] == $rowLevel['id'] ? 'selected' : '' ?>>
+                                                                        <?php echo $rowLevel['level_name'] ?>
+                                                                    </option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        <?php else : ?>
+                                                            <input type="text" value="<?php echo isset($_GET['edit']) ? $rowEdit['level_name'] : '' ?>" class="form-control" readonly>
+                                                            <input type="hidden" name="level" value="<?php echo isset($_GET['edit']) ? $rowEdit['id_level'] : '' ?>">
+                                                        <?php endif ?>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="" class="form-label">Alamat Pelanggan</label>
-                                                    <input type="text"
-                                                        class="form-control"
-                                                        name="alamat"
-                                                        placeholder="Masukkan Alamat"
-                                                        required
-                                                        value="<?php echo isset($_GET['edit']) ? $rowEdit['address'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="" class="mb-1">Pilih Level</label>
-                                                    <?php if ($_SESSION['user_id'] == 1): ?>
-                                                        <select name="level" id="" class="form-control">
-                                                            <?php
-                                                            while ($rowLevel = mysqli_fetch_assoc($level)) { ?>
-                                                                <option value="<?php echo $rowLevel['id'] ?>" <?php echo isset($_GET['edit']) && $rowEdit['id_level'] == $rowLevel['id'] ? 'selected' : '' ?>>
-                                                                    <?php echo $rowLevel['level_name'] ?>
-                                                                </option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    <?php else : ?>
-                                                        <input type="text" value="<?php echo isset($_GET['edit']) ? $rowEdit['level_name'] : '' ?>" class="form-control" readonly>
-                                                        <input type="hidden" name="level" value="<?php echo isset($_GET['edit']) ? $rowEdit['id_level'] : '' ?>">
-                                                    <?php endif ?>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="" class="form-label">Masukkan Enail</label>
-                                                    <input type="email"
-                                                        class="form-control"
-                                                        name="email"
-                                                        placeholder="Masukkan Alamat Email"
-                                                        required
-                                                        value="<?php echo isset($_GET['edit']) ? $rowEdit['email'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
-                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="" class="form-label">Masukkan Enail</label>
+                                                        <input type="email"
+                                                            class="form-control"
+                                                            name="email"
+                                                            placeholder="Masukkan Alamat Email"
+                                                            required
+                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['email'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                                    </div>
 
-                                            </div>
-                                            <button type="submit" name="<?php echo isset($_GET['edit']) ? 'edit' : 'tambah' ?>" class="btn-sm btn-primary">Submit</button>
-                                        </form>
+                                                </div>
+                                                <button type="submit" name="<?php echo isset($_GET['edit']) ? 'edit' : 'tambah' ?>" class="btn-sm btn-primary">Submit</button>
+                                            </form>
+                                        <?php endif ?>
                                     </php>
                                 </div>
                             </div>
@@ -266,9 +270,8 @@ $level = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
 
     <div class="buy-now">
         <a
-            href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-            target="_blank"
-            class="btn btn-danger btn-buy-now">Welcome to MY-Coffee</a>
+            href="#"
+            class="btn btn-buy-now-new text-white">Welcome to MY-Coffee</a>
     </div>
 
     <?php include '../layout/js.php' ?>

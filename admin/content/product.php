@@ -138,7 +138,7 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
 
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
-                            <?php if (isset($_GET['edit']) || isset($_GET['tambah']) || isset($_GET['detail'])) : ?>
+                            <?php if (isset($_GET['edit']) || isset($_GET['add_product']) || isset($_GET['detail'])) : ?>
                                 <!-- Tambah & Edit Barang -->
                                 <div class="col-sm-12">
                                     <div class="card">
@@ -153,84 +153,88 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                     Data berhasil dihapus
                                                 </div>
                                             <?php endif ?>
-                                            <form action="" method="post" enctype="multipart/form-data">
-                                                <div class="mb-3 row">
-                                                    <div class="col-sm-6">
-                                                        <label for="" class="form-label">Pilih Kategori</label>
-                                                        <select name="id_category" id="kategori" class="form-control" <?php echo isset($_GET['detail']) ? 'disabled' : '' ?>>
-                                                            <option value="" <?php echo isset($_GET['detail']) ? 'disabled' : '' ?>><?php echo isset($_GET['edit']) ? $rowEdit['name_category'] : '--Pilih Kategori--' ?></option>
-                                                            <?php while ($rowCategory = mysqli_fetch_assoc($insertCategory)) {
-                                                                $select = isset($_GET['edit']) && $rowCategory['id'] == $rowEdit['id_category'] ? 'selected' : '' ?>
-                                                                <option value="<?php echo $rowCategory['id'] ?>" <?php echo $select; ?>> <?php echo $rowCategory['name_category'] ?></option>
-                                                            <?php } ?>
-                                                        </select>
+                                            <?php if (isset($_GET['edit']) && !isset($rowEdit['id'])): ?>
+                                                <h5 class="text-danger">Data Tidak Ditemukan</h5>
+                                            <?php else : ?>
+                                                <form action="" method="post" enctype="multipart/form-data">
+                                                    <div class="mb-3 row">
+                                                        <div class="col-sm-6">
+                                                            <label for="" class="form-label">Pilih Kategori</label>
+                                                            <select name="id_category" id="kategori" class="form-control" <?php echo isset($_GET['detail']) ? 'disabled' : '' ?>>
+                                                                <option value="" <?php echo isset($_GET['detail']) ? 'disabled' : '' ?>><?php echo isset($_GET['edit']) ? $rowEdit['name_category'] : '--Pilih Kategori--' ?></option>
+                                                                <?php while ($rowCategory = mysqli_fetch_assoc($insertCategory)) {
+                                                                    $select = isset($_GET['edit']) && $rowCategory['id'] == $rowEdit['id_category'] ? 'selected' : '' ?>
+                                                                    <option value="<?php echo $rowCategory['id'] ?>" <?php echo $select; ?>> <?php echo $rowCategory['name_category'] ?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="" class="form-label">Nama Produk</label>
+                                                            <input type="text"
+                                                                class="form-control"
+                                                                name="nama_product"
+                                                                placeholder="Masukkan nama barang"
+                                                                required
+                                                                value="<?php echo isset($_GET['edit']) ? $rowEdit['product_name'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <label for="" class="form-label">Nama Produk</label>
-                                                        <input type="text"
-                                                            class="form-control"
-                                                            name="nama_product"
-                                                            placeholder="Masukkan nama barang"
-                                                            required
-                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['product_name'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <div class="col-sm-6">
-                                                        <label for="" class="form-label">Deskripsi Produk</label>
-                                                        <textarea
-                                                            class="form-control"
-                                                            name="deskripsi"
-                                                            placeholder="Masukkan deskripsi barang" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>><?php echo isset($_GET['edit']) ? $rowEdit['description'] : '' ?>
+                                                    <div class="mb-3 row">
+                                                        <div class="col-sm-6">
+                                                            <label for="" class="form-label">Deskripsi Produk</label>
+                                                            <textarea
+                                                                class="form-control"
+                                                                name="deskripsi"
+                                                                placeholder="Masukkan deskripsi barang" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>><?php echo isset($_GET['edit']) ? $rowEdit['description'] : '' ?>
                                                         </textarea>
 
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <label for="" class="form-label">Harga Product</label>
-                                                        <input type="number"
-                                                            class="form-control"
-                                                            name="price"
-                                                            placeholder="Masukkan harga barang"
-                                                            required
-                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['price'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <div class="col-sm-6">
-                                                        <?php if (!isset($_GET['detail'])) : ?>
-                                                            <label for="" class="form-label">Masukkan Foto Produk</label>
-                                                            <input type="file"
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="" class="form-label">Harga Product</label>
+                                                            <input type="number"
                                                                 class="form-control"
-                                                                name="foto"
-                                                                placeholder="Masukkan foto barang"
-                                                                value="<?php echo isset($_GET['edit']) ? $rowEdit['image'] : '' ?>">
+                                                                name="price"
+                                                                placeholder="Masukkan harga barang"
+                                                                required
+                                                                value="<?php echo isset($_GET['edit']) ? $rowEdit['price'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <div class="col-sm-6">
+                                                            <?php if (!isset($_GET['detail'])) : ?>
+                                                                <label for="" class="form-label">Masukkan Foto Produk</label>
+                                                                <input type="file"
+                                                                    class="form-control"
+                                                                    name="foto"
+                                                                    placeholder="Masukkan foto barang"
+                                                                    value="<?php echo isset($_GET['edit']) ? $rowEdit['image'] : '' ?>">
+                                                            <?php endif ?>
+                                                            <?php if (isset($_GET['edit'])) : ?>
+                                                                <label for=""><?php echo isset($_GET['detail']) ? 'Foto Produk' : '' ?></label><br />
+                                                                <img src="../upload/<?php echo $rowEdit['image'] ?>" width="100" height="auto" class="mt-2" alt="">
+                                                            <?php endif ?>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="" class="form-label">Stok Produk</label>
+                                                            <input type="number"
+                                                                class="form-control"
+                                                                name="stock"
+                                                                placeholder="Masukkan stock barang"
+                                                                required
+                                                                value="<?php echo isset($_GET['edit']) ? $rowEdit['stock'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
+                                                        </div>
+                                                    </div>
+                                                    <div class="my-3">
+                                                        <?php if (!isset($_GET['detail'])) : ?>
+                                                            <button class="btn btn-sm btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
+                                                                Simpan
+                                                            </button>
                                                         <?php endif ?>
-                                                        <?php if (isset($_GET['edit'])) : ?>
-                                                            <label for=""><?php echo isset($_GET['detail']) ? 'Foto Produk' : '' ?></label><br />
-                                                            <img src="../upload/<?php echo $rowEdit['image'] ?>" width="100" height="auto" class="mt-2" alt="">
+                                                        <?php if (isset($_GET['detail'])) : ?>
+                                                            <a href="../content/product.php" class="btn-sm btn-secondary">Kembali</a>
                                                         <?php endif ?>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <label for="" class="form-label">Stok Produk</label>
-                                                        <input type="number"
-                                                            class="form-control"
-                                                            name="stock"
-                                                            placeholder="Masukkan stock barang"
-                                                            required
-                                                            value="<?php echo isset($_GET['edit']) ? $rowEdit['stock'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : '' ?>>
-                                                    </div>
-                                                </div>
-                                                <div class="my-3">
-                                                    <?php if (!isset($_GET['detail'])) : ?>
-                                                        <button class="btn btn-sm btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
-                                                            Simpan
-                                                        </button>
-                                                    <?php endif ?>
-                                                    <?php if (isset($_GET['detail'])) : ?>
-                                                        <a href="../content/product.php" class="btn-sm btn-secondary">Kembali</a>
-                                                    <?php endif ?>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            <?php endif ?>
                                         </div>
                                     </div>
                                 </div>
@@ -246,7 +250,7 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
                                                 </div>
                                             <?php endif ?>
                                             <div align="right" class="mb-3">
-                                                <a href="product.php?tambah" class="btn btn-primary mt-2">Tambah</a>
+                                                <a href="product.php?add_product" class="btn btn-primary mt-2">Tambah</a>
                                             </div>
                                             <table class="table table-bordered text-wrap">
                                                 <thead>
@@ -314,9 +318,8 @@ $insertCategory = mysqli_query($koneksi, "SELECT * FROM category")
 
     <div class="buy-now">
         <a
-            href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-            target="_blank"
-            class="btn btn-danger btn-buy-now">Welcome to MY-Coffee</a>
+            href="#"
+            class="btn btn-buy-now-new text-white">Welcome to MY-Coffee</a>
     </div>
 
     <?php include '../layout/js.php' ?>

@@ -1,5 +1,6 @@
 <?php
 include 'admin/database/koneksi.php';
+// include 'admin/layout/route.php';
 
 $queryImages = mysqli_query($koneksi, "SELECT * FROM product");
 
@@ -146,7 +147,7 @@ while ($row = mysqli_fetch_assoc($queryImages)) {
         <!-- You can delete the links only if you've purchased the pro version. -->
         <!-- Licensing information: https://bootstrapmade.com/license/ -->
         <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a href="https://themewagon.com">ThemeWagon</a>
+        Designed by <a href="https://bootstrapmade.com/">bootstrapmade</a><a href="https://themewagon.com"></a>
       </div>
     </div>
 

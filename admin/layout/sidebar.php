@@ -1,3 +1,4 @@
+<?php include 'encryp.php'; ?>
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="index.php" class="d-flex">
@@ -100,9 +101,9 @@
                     <div data-i18n="Basic"> Customer</div>
                 </a>
             </li>
-        <?php else : ?>
+        <?php else : $encrypt = encryptId($_SESSION['user_id'], $key) ?>
             <li class="menu-item">
-                <a href="../content/user.php?edit=<?php echo $_SESSION['user_id'] ?>" class="menu-link">
+                <a href="../content/user.php?edit=<?php echo urlencode($encrypt)  ?>" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-collection"></i>
                     <div data-i18n="Basic"> Profile</div>
                 </a>

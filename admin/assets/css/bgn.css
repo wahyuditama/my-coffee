@@ -1,0 +1,8 @@
+.buy-now .btn-buy-now-new {
+  position: fixed;
+  bottom: 3rem;
+  right: 1.625rem;
+  z-index: 999999;
+  background-color: #bf702a;
+  box-shadow: 0 1px 10px 1px #bf702a;
+}

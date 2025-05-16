@@ -5,20 +5,20 @@
             <script>
                 document.write(new Date().getFullYear());
             </script>
-            , made with ❤️ by
-            <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
+            , made by
+            <a href="https://github.com/wahyuditama/my-coffee.git" target="_blank" class="footer-link fw-bolder">WahyuRamdany</a>
         </div>
         <div>
-            <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
+            <!-- <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a> -->
             <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
 
             <a
-                href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                href="https://getbootstrap.com/docs/5.3/getting-started/introduction/"
                 target="_blank"
                 class="footer-link me-4">Documentation</a>
 
             <a
-                href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+                href="https://github.com/wahyuditama"
                 target="_blank"
                 class="footer-link me-4">Support</a>
         </div>

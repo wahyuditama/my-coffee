@@ -1,5 +1,6 @@
  <?php
     include '../database/koneksi.php';
+    include '../layout/encryp.php';
     session_start();
 
 
@@ -43,7 +44,7 @@
 
 
     //Edit Data Suggestion
-    $id = isset($_GET['edit']) ? $_GET['edit'] : '';
+    $id = isset($_GET['edit']) ? decryptId($_GET['edit'], $key) : '';
     $editData = mysqli_query($koneksi, "SELECT * FROM services WHERE id='$id'");
     $rowEdit = mysqli_fetch_assoc($editData);
 
@@ -87,7 +88,7 @@
 
     //Delete Data
     if (isset($_GET['deleted'])) {
-        $id_delete = $_GET['deleted'];
+        $id_delete = decryptId($_GET['deleted'], $key);
         mysqli_query($koneksi, "DELETE FROM services WHERE id='$id_delete'");
     }
     //ambil data
@@ -156,50 +157,54 @@
                                          <a href="?" class="btn-sm btn-secondary ml-3 p-2 rounded">Kembali</a>
                                      </div>
                                      <div class="card-body">
-                                         <form action="" method="post" enctype="multipart/form-data">
-                                             <div class="row">
-                                                 <div class="col-md-6">
-                                                     <label for="title" class="form-label mb-3">Masukan Title Disini</label>
-                                                     <input type="text"
-                                                         class="form-control"
-                                                         id="title"
-                                                         name="judul"
-                                                         value="<?php echo isset($_GET['edit']) ? $rowEdit['title'] : '' ?>"
-                                                         required>
-                                                     <label for="title" class="form-label mt-3">Masukan Sub-Title </label>
-                                                     <textarea type="text"
-                                                         class="form-control"
-                                                         id="sub_judul"
-                                                         name="sub_judul"
-                                                         value=""><?php echo isset($_GET['edit']) ? $rowEdit['sub_title'] : '' ?></textarea>
-                                                 </div>
-                                                 <div class="col-md-6">
-                                                     <label for="title" class="form-label mb-3">Masukan Text Artikel Disini</label>
-                                                     <textarea type="text"
-                                                         class="form-control"
-                                                         id="artikel"
-                                                         name="artikel"
-                                                         value=""><?php echo isset($_GET['edit']) ? $rowEdit['article'] : '' ?></textarea>
-                                                     <label for="title" class="form-label my-3">Masukan Text deskripsi Disini</label>
-                                                     <textarea type="text"
-                                                         class="form-control"
-                                                         id="deskripsi"
-                                                         name="deskripsi"
-                                                         value=""><?php echo isset($_GET['edit']) ? $rowEdit['description'] : '' ?></textarea>
-                                                 </div>
+                                         <?php if (isset($_GET['edit']) && !isset($rowEdit['id'])) : ?>
+                                             <h5 class="text-danger">Data Tidak Ditemukan</h5>
+                                         <?php else : ?>
+                                             <form action="" method="post" enctype="multipart/form-data">
+                                                 <div class="row">
+                                                     <div class="col-md-6">
+                                                         <label for="title" class="form-label mb-3">Masukan Title Disini</label>
+                                                         <input type="text"
+                                                             class="form-control"
+                                                             id="title"
+                                                             name="judul"
+                                                             value="<?php echo isset($_GET['edit']) ? $rowEdit['title'] : '' ?>"
+                                                             required>
+                                                         <label for="title" class="form-label mt-3">Masukan Sub-Title </label>
+                                                         <textarea type="text"
+                                                             class="form-control"
+                                                             id="sub_judul"
+                                                             name="sub_judul"
+                                                             value=""><?php echo isset($_GET['edit']) ? $rowEdit['sub_title'] : '' ?></textarea>
+                                                     </div>
+                                                     <div class="col-md-6">
+                                                         <label for="title" class="form-label mb-3">Masukan Text Artikel Disini</label>
+                                                         <textarea type="text"
+                                                             class="form-control"
+                                                             id="artikel"
+                                                             name="artikel"
+                                                             value=""><?php echo isset($_GET['edit']) ? $rowEdit['article'] : '' ?></textarea>
+                                                         <label for="title" class="form-label my-3">Masukan Text deskripsi Disini</label>
+                                                         <textarea type="text"
+                                                             class="form-control"
+                                                             id="deskripsi"
+                                                             name="deskripsi"
+                                                             value=""><?php echo isset($_GET['edit']) ? $rowEdit['description'] : '' ?></textarea>
+                                                     </div>
 
-                                                 <div class="col-md-6">
-                                                     <label for="images" class="form-label mt-3">Masukan gambar disini (Optional)</label>
-                                                     <input type="file"
-                                                         class="form-control"
-                                                         id="gambar"
-                                                         name="gambar">
-                                                     <img src="../upload/<?php echo $rowEdit['images'] ?>" class="mt-3" width="100" height="auto" alt="">
-                                                 </div>
+                                                     <div class="col-md-6">
+                                                         <label for="images" class="form-label mt-3">Masukan gambar disini (Optional)</label>
+                                                         <input type="file"
+                                                             class="form-control"
+                                                             id="gambar"
+                                                             name="gambar">
+                                                         <img src="../upload/<?php echo $rowEdit['images'] ?>" class="mt-3" width="100" height="auto" alt="">
+                                                     </div>
 
-                                             </div>
-                                             <button type="submit" name="<?php echo isset($_GET['edit']) ? 'edit' : 'submit' ?>" class="btn-md btn-primary mt-3"><?php echo isset($_GET['tambah']) ? 'Tambah' : 'Edit' ?></button>
-                                         </form>
+                                                 </div>
+                                                 <button type="submit" name="<?php echo isset($_GET['edit']) ? 'edit' : 'submit' ?>" class="btn-md btn-primary mt-3"><?php echo isset($_GET['tambah']) ? 'Tambah' : 'Edit' ?></button>
+                                             </form>
+                                         <?php endif ?>
                                      </div>
                                  </div>
                              <?php else : ?>
@@ -209,7 +214,7 @@
                                              <a href="">Servicescape :</a>
                                              <a href="?tambah" class="btn-sm btn-primary">tambah</a>
                                          </div>
-                                         <?php foreach ($resultQuery as $val_services) : ?>
+                                         <?php foreach ($resultQuery as $val_services) : $encrypt = encryptId($val_services['id'], $key) ?>
                                              <div class="col-md-4 mb-5">
                                                  <div class="card" style="height: 12rem;">
                                                      <div class="card-title px-3 pt-2 border-bottom">
@@ -223,8 +228,8 @@
                                                              </button>
                                                          </div>
                                                          <div class="col-md-6 mt-2">
-                                                             <a href="?edit=<?php echo $val_services['id'] ?>" class="btn-sm btn-success mx-2 p-2"><span class=" bx bx-pencil"></span></a>
-                                                             <a href="?deleted=<?php echo $val_services['id'] ?>" class="btn-sm btn-danger p-2"><span class=" bx bx-trash"></span></a>
+                                                             <a href="?edit=<?php echo urlencode($encrypt) ?>" class="btn-sm btn-success mx-2 p-2"><span class=" bx bx-pencil"></span></a>
+                                                             <a href="?deleted=<?php echo urlencode($encrypt) ?>" class="btn-sm btn-danger p-2"><span class=" bx bx-trash"></span></a>
                                                          </div>
                                                      </div>
                                                  </div>

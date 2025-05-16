@@ -91,7 +91,7 @@ if (isset($_GET['delete'])) {
 
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
-                            <?php if (isset($_GET['edit']) || isset($_GET['tambah'])) : ?>
+                            <?php if (isset($_GET['edit']) || isset($_GET['add_category'])) : ?>
                                 <!-- Tambah & Edit Barang -->
                                 <div class="col-sm-12">
                                     <div class="card">
@@ -107,18 +107,26 @@ if (isset($_GET['delete'])) {
                                                 <div class="mb-3 row">
                                                     <div class="col-sm-6">
                                                         <label for="" class="form-label">Nama Kategori</label>
-                                                        <input type="text"
-                                                            class="form-control"
-                                                            name="name_category"
-                                                            placeholder="Masukkan nama kategori"
-                                                            required
-                                                            value="<?php echo isset($_GET['edit']) ? (isset($rowEdit['name_category']) ? $rowEdit['name_category'] : 'Data tidak ditemukan') : ''; ?>">
+                                                        <?php if (isset($_GET['edit']) && !isset($rowEdit['id'])) : ?>
+                                                            <h5 class="text-danger">Data Tidak Ditemukan</h5>
+                                                        <?php else : ?>
+                                                            <input type="text"
+                                                                class="form-control"
+                                                                name="name_category"
+                                                                placeholder="Masukkan nama kategori"
+                                                                required
+                                                                value="<?php echo isset($_GET['edit']) ? $rowEdit['name_category'] : '' ?>">
+                                                        <?php endif ?>
                                                     </div>
                                                 </div>
                                                 <div class="my-3">
-                                                    <button class="btn btn-sm btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
-                                                        <?php echo isset($rowEdit) == null ? '<a href="javascript:window.history.back();">Kembali<a/>' : 'Simpan' ?>
-                                                    </button>
+                                                    <?php if (isset($_GET['edit']) && !isset($rowEdit['id'])) :  ?>
+                                                        <a href="category.php?" class="btn btn-sm btn-secondary">Kembali</a>
+                                                    <?php else : ?>
+                                                        <button class="btn btn-sm btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">
+                                                            Simpan
+                                                        </button>
+                                                    <?php endif ?>
                                                 </div>
                                             </form>
                                         </div>
@@ -136,7 +144,7 @@ if (isset($_GET['delete'])) {
                                                 </div>
                                             <?php endif ?>
                                             <div align="right" class="mb-3">
-                                                <a href="category.php?tambah" class="btn btn-primary mt-2">Tambah</a>
+                                                <a href="category.php?add_category" class="btn btn-primary mt-2">Tambah</a>
                                             </div>
                                             <table class="table table-bordered text-center">
                                                 <thead>
@@ -196,9 +204,8 @@ if (isset($_GET['delete'])) {
 
     <div class="buy-now">
         <a
-            href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-            target="_blank"
-            class="btn btn-danger btn-buy-now">Welcome to MY-Coffee</a>
+            href="#"
+            class="btn btn-buy-now-new text-white">Welcome to MY-Coffee</a>
     </div>
 
     <?php include '../layout/js.php' ?>

@@ -62,6 +62,7 @@ if (isset($_POST['register'])) {
     <!-- Core CSS -->
     <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="../assets/css/bgn.css" />
     <link rel="stylesheet" href="../assets/css/demo.css" />
 
     <!-- Vendors CSS -->
@@ -93,12 +94,12 @@ if (isset($_POST['register'])) {
                                 <span class="app-brand-logo demo">
                                     <img src="../assets/img/backgrounds/side-logo-coffee.png" width="60" height="auto" alt="">
                                 </span>
-                                <span class="app-brand-text demo text-body fw-bolder">My Coffee</span>
+                                <span class="app-brand-text demo text-body fw-bolder" style="font-family:Playwrite AU SA, serif;">My Coffee</span>
                             </a>
                         </div>
                         <!-- /Logo -->
                         <div class="text-header text-center">
-                            <h4 class="mb-2">Welcome to My-Coffee 👋</h4>
+                            <h4 class="mb-2" style="font-family:Playwrite AU SA, serif;">Welcome to My-Coffee 👋</h4>
                             <p class="mb-4">Please login to your account to start ordering!</p>
                         </div>
 
@@ -154,13 +155,13 @@ if (isset($_POST['register'])) {
                                 </div>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-1">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" />
+                                    <!-- <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" />
                                     <label class="form-check-label" for="terms-conditions">
                                         I agree to
                                         <a href="javascript:void(0);">privacy policy & terms</a>
-                                    </label>
+                                    </label> -->
                                 </div>
                             </div>
                             <button type="submit" name="register" class="btn btn-primary d-grid w-100">Sign up</button>
@@ -183,9 +184,8 @@ if (isset($_POST['register'])) {
 
     <div class="buy-now">
         <a
-            href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-            target="_blank"
-            class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
+            href="#"
+            class="btn btn-buy-now-new text-white" style="font-family:Playwrite AU SA, serif;">Welcome to MY-Coffee</a>
     </div>
 
     <!-- Core JS -->
